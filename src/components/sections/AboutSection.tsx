@@ -1,10 +1,11 @@
 import Image from 'next/image'
+import { Wand2, Users, Rocket } from 'lucide-react'
 import type { AboutBadge } from '@/types'
 
-const BADGES: AboutBadge[] = [
-  { id: 'aem-architect', icon: 'auto_fix_high', label: 'AEM Architect' },
-  { id: 'team-leader', icon: 'groups', label: 'Team Leader' },
-  { id: 'automation-expert', icon: 'rocket_launch', label: 'Automation Expert' },
+const BADGES: (AboutBadge & { IconComponent: React.ElementType })[] = [
+  { id: 'aem-architect', icon: 'auto_fix_high', label: 'AEM Architect', IconComponent: Wand2 },
+  { id: 'team-leader', icon: 'groups', label: 'Team Leader', IconComponent: Users },
+  { id: 'automation-expert', icon: 'rocket_launch', label: 'Automation Expert', IconComponent: Rocket },
 ]
 
 const PROFILE_IMAGE_URL =
@@ -67,12 +68,12 @@ export default function AboutSection() {
 
             {/* Badge chips */}
             <div className="flex flex-wrap gap-4 mt-8">
-              {BADGES.map(({ id, icon, label }) => (
+              {BADGES.map(({ id, IconComponent, label }) => (
                 <div
                   key={id}
                   className="flex items-center gap-2 px-4 py-2 bg-nebula-purple/10 border border-nebula-purple/30 rounded-lg hover:border-primary/50 transition-colors"
                 >
-                  <span className="material-symbols-outlined text-primary text-xl">{icon}</span>
+                  <IconComponent className="text-primary w-5 h-5" />
                   <span className="font-label-md text-starlight-white">{label}</span>
                 </div>
               ))}

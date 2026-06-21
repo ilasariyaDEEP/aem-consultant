@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { usePortfolioStore } from '@/store/usePortfolioStore'
+import { Radio, Info, Terminal, Loader2, CheckCircle, Send, Share2, AtSign, Globe } from 'lucide-react'
 import type { ContactFormData } from '@/types'
 
 const SUBJECT_OPTIONS = [
@@ -20,6 +21,7 @@ const CONTACT_INFO = [
     label: 'Direct Uplink',
     value: 'ilasariyadeep13@gmail.com',
     href: 'mailto:ilasariyadeep13@gmail.com',
+    IconComponent: AtSign,
   },
   {
     id: 'location',
@@ -29,6 +31,7 @@ const CONTACT_INFO = [
     label: 'Orbital Sector',
     value: 'Ahmedabad, IN (IST UTC+5:30)',
     href: null,
+    IconComponent: Globe,
   },
 ] as const
 
@@ -159,12 +162,7 @@ export default function ContactSection() {
                 <span className="font-label-caps text-label-caps text-starlight-white uppercase">
                   System Diagnostics
                 </span>
-                <span
-                  className="material-symbols-outlined text-primary"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  sensors
-                </span>
+                <Radio className="text-primary w-6 h-6" />
               </div>
               <div className="space-y-4 font-label-md text-label-md">
                 <div className="flex justify-between">
@@ -189,7 +187,7 @@ export default function ContactSection() {
 
             {/* Tip card */}
             <div className="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 bg-void-black/60 glass-panel">
-              <span className="material-symbols-outlined text-cosmic-teal">info</span>
+              <Info className="text-cosmic-teal w-6 h-6" />
               <p className="font-label-md text-label-md text-secondary">
                 Tip: Double-click the star map to pin your origin coordinates before sending.
               </p>
@@ -265,7 +263,7 @@ export default function ContactSection() {
             <div className="glass-panel p-8 md:p-10 flex flex-col gap-8 rounded-xl">
               <div className="flex items-center gap-4">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <span className="material-symbols-outlined text-primary">terminal</span>
+                  <Terminal className="text-primary w-6 h-6" />
                 </div>
                 <h2 className="font-headline-md text-headline-md text-starlight-white">
                   Signal Composition
@@ -401,14 +399,7 @@ export default function ContactSection() {
                         : 'Broadcast Signal'}
                     </span>
 
-                    <span
-                      className={`material-symbols-outlined relative z-10 transition-transform group-hover:translate-x-1 ${
-                        isSubmitting ? 'animate-spin' : ''
-                      }`}
-                      style={{ fontVariationSettings: "'FILL' 1" }}
-                    >
-                      {isSubmitting ? 'sync' : isSuccess ? 'check_circle' : 'send'}
-                    </span>
+                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : isSuccess ? <CheckCircle className="w-5 h-5" /> : <Send className="w-5 h-5" />}
                   </button>
                 </div>
               </form>
@@ -418,7 +409,7 @@ export default function ContactSection() {
 
         {/* Contact info cards */}
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {CONTACT_INFO.map(({ id, icon, iconBg, iconColor, label, value, href }) => (
+          {CONTACT_INFO.map(({ id, icon, iconBg, iconColor, label, value, href, IconComponent }) => (
             <div
               key={id}
               className="glass-panel p-6 flex flex-col gap-4 group hover:bg-surface-container-low transition-colors duration-500 rounded-xl"
@@ -426,7 +417,7 @@ export default function ContactSection() {
               <div
                 className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center ${iconColor} group-hover:scale-110 transition-transform`}
               >
-                <span className="material-symbols-outlined">{icon}</span>
+                <IconComponent className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-label-caps text-label-caps text-starlight-white uppercase mb-1">
@@ -449,7 +440,7 @@ export default function ContactSection() {
           {/* Social links card */}
           <div className="glass-panel p-6 flex flex-col gap-4 group hover:bg-surface-container-low transition-colors duration-500 rounded-xl">
             <div className="w-12 h-12 rounded-xl bg-nebula-purple/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined">share</span>
+              <Share2 className="w-6 h-6" />
             </div>
             <div className="flex gap-4 flex-wrap">
               {SOCIAL_LINKS.map(({ label, href }) => (

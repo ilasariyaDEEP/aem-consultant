@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { Sparkles, Rocket, Telescope, ExternalLink, GraduationCap, Calendar, Medal, BadgeCheck, Award, Users, Microscope } from 'lucide-react'
 import type { GalleryItem, CertCard } from '@/types'
 
 const GALLERY_ITEMS: GalleryItem[] = [
@@ -26,7 +27,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
 ]
 
-const CERTS: CertCard[] = [
+const CERTS: (CertCard & { IconComponent: React.ElementType })[] = [
   {
     id: 'nss',
     icon: 'military_tech',
@@ -35,6 +36,7 @@ const CERTS: CertCard[] = [
     value: 'NSS Head (2019–2020)',
     span: 2,
     tags: ['ORGANIZATION', 'IMPACT'],
+    IconComponent: Medal,
   },
   {
     id: 'adobe',
@@ -42,6 +44,7 @@ const CERTS: CertCard[] = [
     iconColor: 'text-cosmic-teal',
     label: 'ADOBE CERTIFIED',
     value: 'AEM Sites Business Practitioner',
+    IconComponent: BadgeCheck,
   },
   {
     id: 'jhu',
@@ -49,6 +52,7 @@ const CERTS: CertCard[] = [
     iconColor: 'text-cosmic-teal',
     label: 'JOHNS HOPKINS',
     value: 'Data Science & R Programming',
+    IconComponent: Award,
   },
   {
     id: 'ltc',
@@ -56,6 +60,7 @@ const CERTS: CertCard[] = [
     iconColor: 'text-primary',
     label: 'LTC',
     value: 'Leadership Training Camp – UoM',
+    IconComponent: Users,
   },
   {
     id: 'idf',
@@ -64,6 +69,7 @@ const CERTS: CertCard[] = [
     label: 'INDIAN DEVELOPMENT FOUNDATION',
     value: 'Student Leadership Programme',
     span: 2,
+    IconComponent: Users,
   },
   {
     id: 'python',
@@ -71,6 +77,7 @@ const CERTS: CertCard[] = [
     iconColor: 'text-cosmic-teal',
     label: "YUVI PATEL'S",
     value: 'Python for Data Science',
+    IconComponent: Microscope,
   },
 ]
 
@@ -87,7 +94,7 @@ export default function AstronomySection() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center min-h-[400px]">
         <div className="space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nebula-purple/20 border border-nebula-purple/40">
-            <span className="material-symbols-outlined text-base text-primary">auto_awesome</span>
+            <Sparkles className="text-primary w-4 h-4" />
             <span className="font-label-caps text-label-caps text-primary">Scientific Explorer</span>
           </div>
 
@@ -112,7 +119,7 @@ export default function AstronomySection() {
               className="px-8 py-3 bg-nebula-purple rounded-lg font-label-caps text-label-caps text-starlight-white flex items-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-nebula-purple/20"
             >
               View Astrophotography
-              <span className="material-symbols-outlined text-sm">rocket_launch</span>
+              <Rocket className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -132,9 +139,7 @@ export default function AstronomySection() {
                 style={{ animation: 'spin 14s linear infinite reverse' }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="material-symbols-outlined text-primary text-6xl opacity-60">
-                  telescope
-                </span>
+                <Telescope className="text-primary w-16 h-16 opacity-60" />
               </div>
             </div>
           </div>
@@ -164,7 +169,7 @@ export default function AstronomySection() {
             className="font-label-caps text-label-caps text-primary hover:underline flex items-center gap-2"
           >
             Visit Website
-            <span className="material-symbols-outlined text-sm">open_in_new</span>
+            <ExternalLink className="w-4 h-4" />
           </Link>
         </div>
 
@@ -173,12 +178,7 @@ export default function AstronomySection() {
           <div className="md:col-span-2 glass-card rounded-2xl p-8 space-y-6">
             <div className="flex items-start gap-6">
               <div className="w-20 h-20 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                <span
-                  className="material-symbols-outlined text-4xl text-primary"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  school
-                </span>
+                <GraduationCap className="text-primary w-10 h-10" strokeWidth={1} />
               </div>
               <div>
                 <h3 className="font-headline-md text-headline-md text-starlight-white">
@@ -235,11 +235,7 @@ export default function AstronomySection() {
                 }`}
             >
               <div>
-                <span
-                  className={`material-symbols-outlined text-3xl mb-4 block ${cert.iconColor}`}
-                >
-                  {cert.icon}
-                </span>
+                <cert.IconComponent className={`w-8 h-8 mb-4 block ${cert.iconColor}`} />
                 {cert.tags ? (
                   <>
                     <h3 className="font-headline-md text-headline-md">{cert.value}</h3>
@@ -340,7 +336,7 @@ export default function AstronomySection() {
               className="bg-primary text-on-primary px-8 py-3 rounded-full font-label-caps text-label-caps flex items-center gap-2 hover:shadow-[0_0_20px_rgba(211,187,255,0.4)] transition-all"
             >
               Schedule a Session
-              <span className="material-symbols-outlined text-sm">event</span>
+              <Calendar className="w-4 h-4" />
             </a>
             <Link
               href="https://www.arceducators.in/"

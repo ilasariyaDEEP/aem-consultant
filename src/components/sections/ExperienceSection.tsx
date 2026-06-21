@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import type { TimelineEntry, EngagementCard } from '@/types'
+import { BadgeCheck, Rocket, Telescope, ShieldCheck, Users, Settings, Handshake, BarChart, Zap } from 'lucide-react'
 
 const TIMELINE: TimelineEntry[] = [
   {
@@ -63,7 +64,7 @@ const ENGAGEMENTS: EngagementCard[] = [
       { value: '-66%', label: 'Time Reduced' },
       { value: 'Auto', label: 'Deployment' },
     ],
-    icon: 'bolt',
+    icon: Zap,
   },
   {
     id: 'rosewood',
@@ -179,12 +180,7 @@ export default function ExperienceSection() {
           <div className="md:col-span-4 glass-card p-1 rounded-xl overflow-hidden group border-0">
             <div className="relative h-full bg-deep-navy/30 p-8 flex flex-col items-center text-center">
               <div className="w-20 h-20 bg-nebula-purple/20 rounded-full flex items-center justify-center mb-6 border border-nebula-purple/30 group-hover:scale-110 transition-transform">
-                <span
-                  className="material-symbols-outlined text-4xl text-primary"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  verified
-                </span>
+                  <BadgeCheck className="w-10 h-10 text-primary" strokeWidth={1.5} />
               </div>
               <h3 className="font-headline-md text-headline-md text-starlight-white mb-4">
                 Adobe Certified Expert
@@ -200,7 +196,7 @@ export default function ExperienceSection() {
                   'SEO Best Practices',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2 font-label-md text-starlight-white">
-                    <span className="material-symbols-outlined text-primary text-sm">rocket_launch</span>
+                    <Rocket className="text-primary w-4 h-4" />
                     {item}
                   </li>
                 ))}
@@ -213,9 +209,7 @@ export default function ExperienceSection() {
             <div className="bg-deep-navy/30 p-8 h-full">
               <h4 className="font-label-caps text-primary mb-4">ASTRONOMY ENTHUSIAST</h4>
               <div className="aspect-video bg-void-black/40 rounded-lg mb-6 overflow-hidden relative border border-white/5 flex items-center justify-center">
-                <span className="material-symbols-outlined text-nebula-purple text-5xl opacity-30">
-                  telescope
-                </span>
+                <Telescope className="text-nebula-purple w-12 h-12 opacity-30" />
               </div>
               <p className="text-secondary">
                 Exploring the Andromeda galaxy through the lens of scientific curiosity and
@@ -273,7 +267,7 @@ export default function ExperienceSection() {
             <div className="glass-card p-6 rounded-xl">
               <div className="flex items-center gap-4 mb-4">
                 <div className="p-3 rounded-lg bg-nebula-purple/20">
-                  <span className="material-symbols-outlined text-primary">verified_user</span>
+                  <ShieldCheck className="text-primary w-6 h-6" />
                 </div>
                 <div>
                   <p className="font-label-caps text-label-caps text-primary">Role Certification</p>
@@ -288,7 +282,7 @@ export default function ExperienceSection() {
           </div>
 
           {/* Timeline entries */}
-          <div className="w-full md:w-2/3 relative pl-8 md:pl-12">
+          <div className="w-full md:w-2/3 relative pl-12 md:pl-16">
             {/* Vertical connector */}
             <div className="absolute left-0 top-0 bottom-0 w-px timeline-connector" aria-hidden="true" />
 
@@ -326,8 +320,8 @@ export default function ExperienceSection() {
                     <ul className="space-y-4 text-secondary">
                       {entry.bullets.map((bullet, i) => (
                         <li key={i} className="flex gap-3">
-                          <span className="material-symbols-outlined text-primary shrink-0">
-                            {i === 0 ? 'groups' : i === 1 ? 'rule_settings' : 'handshake'}
+                          <span className="text-primary shrink-0">
+                            {i === 0 ? <Users className="w-5 h-5" /> : i === 1 ? <Settings className="w-5 h-5" /> : <Handshake className="w-5 h-5" />}
                           </span>
                           <span>{bullet}</span>
                         </li>
@@ -368,9 +362,7 @@ export default function ExperienceSection() {
                 <div className="flex flex-col md:flex-row gap-8">
                   <div className="shrink-0">
                     <div className="w-16 h-16 rounded-full bg-nebula-purple/20 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-primary text-3xl">
-                        {eng.icon}
-                      </span>
+                      {eng.icon && <eng.icon className="text-primary w-8 h-8" />}
                     </div>
                   </div>
                   <div>
@@ -431,7 +423,7 @@ export default function ExperienceSection() {
       {/* ─── Technical Capabilities ─── */}
       <div className="glass-card p-12 rounded-3xl overflow-hidden relative">
         <div className="absolute top-0 right-0 p-8 opacity-10" aria-hidden="true">
-          <span className="material-symbols-outlined text-9xl text-primary">analytics</span>
+          <BarChart className="w-32 h-32 text-primary" />
         </div>
         <div className="relative z-10 max-w-2xl">
           <h2 className="font-headline-lg text-headline-lg text-starlight-white mb-8">

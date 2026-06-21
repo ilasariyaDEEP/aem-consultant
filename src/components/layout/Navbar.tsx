@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { useEffect, useCallback } from 'react'
+import { Menu, X } from 'lucide-react'
 import { usePortfolioStore } from '@/store/usePortfolioStore'
 
 const NAV_LINKS: Array<{ label: string; href: string; sectionId: string }> = [
@@ -103,8 +104,8 @@ export default function Navbar() {
           aria-expanded={isMobileMenuOpen}
           className="md:hidden text-starlight-white hover:text-primary transition-colors"
         >
-          <span className="material-symbols-outlined text-2xl">
-            {isMobileMenuOpen ? 'close' : 'menu'}
+          <span className="text-2xl flex items-center justify-center">
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </span>
         </button>
       </nav>

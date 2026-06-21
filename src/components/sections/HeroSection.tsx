@@ -1,8 +1,10 @@
+import { ArrowRight, ChevronDown } from 'lucide-react'
+
 export default function HeroSection() {
   return (
     <section
       id="home"
-      className="min-h-[90vh] flex flex-col justify-center px-gutter max-w-container-max mx-auto relative pt-20"
+      className="min-h-[90vh] flex flex-col justify-center px-gutter max-w-container-max mx-auto relative pt-20 overflow-hidden"
     >
       {/* Nebula atmosphere glow behind hero content */}
       <div
@@ -44,7 +46,7 @@ export default function HeroSection() {
               className="bg-nebula-purple text-starlight-white px-8 py-4 rounded-lg font-headline-md flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(76,29,149,0.4)]"
             >
               View My Work
-              <span className="material-symbols-outlined">arrow_forward</span>
+              <ArrowRight className="w-5 h-5" />
             </a>
             <a
               href="#about"
@@ -80,7 +82,7 @@ export default function HeroSection() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 animate-bounce">
-        <span className="material-symbols-outlined text-primary">expand_more</span>
+        <ChevronDown className="text-primary w-6 h-6" />
       </div>
     </section>
   )

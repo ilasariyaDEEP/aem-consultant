@@ -142,12 +142,17 @@ export default function WebGLBackground(): null {
     }
     window.addEventListener('mousemove', handleMouseMove)
 
-    const render = (time: number): void => {
+    const handleResize = (): void => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
       gl.viewport(0, 0, canvas.width, canvas.height)
-      gl.uniform1f(timeLoc, time * 0.001)
       gl.uniform2f(resLoc, canvas.width, canvas.height)
+    }
+    window.addEventListener('resize', handleResize)
+    handleResize() // Set initial size
+
+    const render = (time: number): void => {
+      gl.uniform1f(timeLoc, time * 0.001)
       gl.uniform2f(mouseLoc, mouseRef.current.x, mouseRef.current.y)
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
       animFrameRef.current = requestAnimationFrame(render)
@@ -156,6 +161,7 @@ export default function WebGLBackground(): null {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('resize', handleResize)
       cancelAnimationFrame(animFrameRef.current)
       canvas.remove()
     }

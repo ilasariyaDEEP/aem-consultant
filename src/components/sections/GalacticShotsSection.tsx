@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { Play, ExternalLink } from 'lucide-react'
 import type { ReelCard } from '@/types'
 
 const INSTAGRAM_URL = 'https://www.instagram.com/galactic.shots/'
@@ -82,9 +83,7 @@ export default function GalacticShotsSection() {
               {/* Play button overlay */}
               <div className="absolute inset-0 flex items-center justify-center z-20">
                 <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/20">
-                  <span className="material-symbols-outlined text-white text-4xl translate-x-0.5">
-                    play_arrow
-                  </span>
+                  <Play className="text-white w-10 h-10 translate-x-0.5" />
                 </div>
               </div>
 
@@ -106,7 +105,7 @@ export default function GalacticShotsSection() {
               </p>
               <div className="mt-auto flex items-center text-primary font-label-caps text-xs gap-2">
                 WATCH REEL
-                <span className="material-symbols-outlined text-sm">open_in_new</span>
+                <ExternalLink className="w-4 h-4" />
               </div>
             </div>
           </Link>
