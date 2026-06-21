@@ -23,7 +23,7 @@ export interface EngagementCard {
   /** Optional span for wide bento cards: 1 | 2 */
   span?: 1 | 2;
   metrics?: Array<{ value: string; label: string }>;
-  icon?: string;
+  icon?: any;
 }
 
 export interface CertCard {
