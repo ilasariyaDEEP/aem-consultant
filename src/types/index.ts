@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface NavItem {
   label: string;
   href: string;
@@ -23,7 +25,7 @@ export interface EngagementCard {
   /** Optional span for wide bento cards: 1 | 2 */
   span?: 1 | 2;
   metrics?: Array<{ value: string; label: string }>;
-  icon?: any;
+  icon?: React.ElementType;
 }
 
 export interface CertCard {

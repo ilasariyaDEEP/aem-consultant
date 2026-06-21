@@ -1,10 +1,17 @@
 import { ArrowRight, ChevronDown } from 'lucide-react'
+import dynamic from 'next/dynamic'
+
+const ExternalSolarSystem = dynamic(() => import('../canvas/ExternalSolarSystem'), {
+  ssr: false,
+})
 
 export default function HeroSection() {
+
+
   return (
     <section
       id="home"
-      className="min-h-[90vh] flex flex-col justify-center px-gutter max-w-container-max mx-auto relative pt-20 overflow-hidden"
+      className="min-h-[90vh] flex flex-col justify-center px-gutter mx-auto relative pt-20 overflow-hidden"
     >
       {/* Nebula atmosphere glow behind hero content */}
       <div
@@ -16,7 +23,12 @@ export default function HeroSection() {
         aria-hidden="true"
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+      {/* 3D Background */}
+      <div className="absolute inset-0 z-0">
+        <ExternalSolarSystem />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 pointer-events-none">
         <div className="lg:col-span-8">
           {/* Label */}
           <span className="font-label-caps text-label-caps text-primary mb-4 block tracking-widest">
@@ -43,40 +55,23 @@ export default function HeroSection() {
           <div className="flex flex-wrap gap-4">
             <a
               href="#experience"
-              className="bg-nebula-purple text-starlight-white px-8 py-4 rounded-lg font-headline-md flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(76,29,149,0.4)]"
+              className="bg-nebula-purple text-starlight-white px-8 py-4 rounded-lg font-headline-md flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(76,29,149,0.4)] pointer-events-auto"
             >
               View My Work
               <ArrowRight className="w-5 h-5" />
             </a>
             <a
               href="#about"
-              className="border border-nebula-purple/50 bg-white/5 backdrop-blur-md text-starlight-white px-8 py-4 rounded-lg font-headline-md hover:bg-white/10 transition-all"
+              className="border border-nebula-purple/50 bg-white/5 backdrop-blur-md text-starlight-white px-8 py-4 rounded-lg font-headline-md hover:bg-white/10 transition-all pointer-events-auto"
             >
               Read Story
             </a>
           </div>
         </div>
 
-        {/* Decorative orbit rings column */}
-        <div className="lg:col-span-4 hidden lg:flex items-center justify-center relative">
-          <div className="relative w-64 h-64">
-            <div
-              className="absolute inset-0 border border-nebula-purple/20 rounded-full"
-              style={{ animation: 'spin 25s linear infinite' }}
-            />
-            <div
-              className="absolute inset-6 border border-nebula-purple/30 rounded-full"
-              style={{ animation: 'spin 18s linear infinite reverse' }}
-            />
-            <div
-              className="absolute inset-12 border border-primary/20 rounded-full"
-              style={{ animation: 'spin 12s linear infinite' }}
-            />
-            {/* Central pulsing star */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-4 h-4 bg-primary rounded-full animate-pulse shadow-[0_0_20px_rgba(211,187,255,0.8)]" />
-            </div>
-          </div>
+        {/* Right column: The 3D view is now full-screen background, we keep this empty or as a spacer for layout balance */}
+        <div className="relative w-full aspect-square max-w-[500px] lg:max-w-none lg:h-[600px] pointer-events-none hidden lg:block">
+          {/* The Solar System runs in the background. */}
         </div>
       </div>
 

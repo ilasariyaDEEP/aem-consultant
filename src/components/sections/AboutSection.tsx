@@ -9,7 +9,7 @@ const BADGES: (AboutBadge & { IconComponent: React.ElementType })[] = [
 ]
 
 const PROFILE_IMAGE_URL =
-  'https://lh3.googleusercontent.com/aida/AP1WRLuohXklFVXNxXjpl11D5b11A5i-6_TVpBBXxAjrK97Lc8o1nfSgSAeDsmqD2LtMaPP7naG0wxsU7OZa9u4faeSRdm_8BhsKEFNw1hwANIXofLqP5jUApBk_zemVoAdK4JK5buS_eDYH04fIHp08QHyneWKabaPt1B0QkbAI8JKXgMlHKWfaySb_zQ2aGDFvDpK_XuG5xDLPPGxgSO7XBKH9ASJxLOmb0VM7oGQW5AkVN0TjkE1L6DlMZvU'
+  'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=1000'
 
 export default function AboutSection() {
   return (

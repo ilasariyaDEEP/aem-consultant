@@ -51,7 +51,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="font-body-md text-body-md bg-transparent text-on-background antialiased overflow-x-hidden">
+      <body className="font-body-md text-body-md bg-transparent text-on-background antialiased overflow-x-hidden" suppressHydrationWarning>
         {/* WebGL starfield background canvas — mounted once globally */}
         <WebGLBackground />
 

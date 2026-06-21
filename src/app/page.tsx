@@ -5,6 +5,7 @@ import SkillsSection from '@/components/sections/SkillsSection'
 import GalacticShotsSection from '@/components/sections/GalacticShotsSection'
 import AstronomySection from '@/components/sections/AstronomySection'
 import ContactSection from '@/components/sections/ContactSection'
+import SolarSystemSection from '@/components/sections/SolarSystemSection'
 
 /**
  * Root page — single-scroll portfolio assembling all sections sequentially:
@@ -15,6 +16,7 @@ import ContactSection from '@/components/sections/ContactSection'
 export default function HomePage() {
   return (
     <>
+      {/* <SolarSystemSection /> */}
       {/* Hero — "AEM Expert by Day, Astronomer by Night" */}
       <HeroSection />
 
