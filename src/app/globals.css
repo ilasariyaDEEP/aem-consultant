@@ -1,0 +1,324 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   Google Fonts & Material Symbols
+───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+
+/* ─────────────────────────────────────────────
+   Base Reset & Body
+───────────────────────────────────────────── */
+:root {
+  --color-primary: #d3bbff;
+  --color-nebula-purple: #4C1D95;
+  --color-void-black: #05070A;
+  --color-deep-navy: #0B0D17;
+  --color-starlight-white: #F9FAFB;
+  --color-cosmic-teal: #5B8B99;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #05070A;
+  color: #cee7ee;
+  overflow-x: hidden;
+  cursor: none;
+  font-family: 'Inter', sans-serif;
+}
+
+* {
+  cursor: none !important;
+}
+
+/* ─────────────────────────────────────────────
+   Custom Scrollbar
+───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #05070A;
+}
+::-webkit-scrollbar-thumb {
+  background: #4C1D95;
+  border-radius: 10px;
+}
+
+/* ─────────────────────────────────────────────
+   WebGL Background Canvas
+───────────────────────────────────────────── */
+#webgl-bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
+   Glassmorphism Utilities
+───────────────────────────────────────────── */
+.glass-card {
+  background: rgba(11, 13, 23, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(211, 187, 255, 0.4);
+  box-shadow: 0 0 20px rgba(76, 29, 149, 0.2);
+  transform: translateY(-4px);
+}
+
+.glass-panel {
+  background: rgba(11, 13, 23, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(211, 187, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ─────────────────────────────────────────────
+   Hero Profile: Black Hole Hover Effect
+───────────────────────────────────────────── */
+.black-hole-container {
+  position: relative;
+  perspective: 1000px;
+  overflow: hidden;
+}
+
+.black-hole-target {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.black-hole-container:hover .black-hole-target {
+  transform: scale(0.05) rotate(720deg);
+  filter: brightness(2) contrast(1.5) hue-rotate(90deg) blur(5px);
+  opacity: 0;
+}
+
+.black-hole-event-horizon {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 30%,
+    rgba(76, 29, 149, 0.8) 50%,
+    #05070a 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 20;
+  mix-blend-mode: screen;
+}
+
+.black-hole-container:hover .black-hole-event-horizon {
+  opacity: 1;
+  animation: swirl-distort 1s linear infinite;
+}
+
+@keyframes swirl-distort {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(360deg) scale(1.5); }
+}
+
+/* ─────────────────────────────────────────────
+   Hero Profile: Aura Glow
+───────────────────────────────────────────── */
+.profile-aura {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    circle,
+    rgba(76, 29, 149, 0.4) 0%,
+    rgba(0, 242, 255, 0.2) 50%,
+    transparent 70%
+  );
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+  border-radius: 1rem;
+}
+
+.profile-container:hover .profile-aura {
+  opacity: 1;
+  animation: pulse-aura 2s infinite ease-in-out;
+}
+
+@keyframes pulse-aura {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+}
+
+/* ─────────────────────────────────────────────
+   Experience: Timeline Connector & Nodes
+───────────────────────────────────────────── */
+.timeline-connector {
+  background: linear-gradient(to bottom, #4C1D95, #d3bbff);
+  box-shadow: 0 0 15px rgba(76, 29, 149, 0.4);
+}
+
+.timeline-node {
+  transition: all 0.3s ease;
+}
+
+.timeline-node-active {
+  box-shadow: 0 0 15px 5px rgba(211, 187, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* ─────────────────────────────────────────────
+   Astronomy: Float Gallery Items
+───────────────────────────────────────────── */
+.float-gallery-item {
+  background: transparent;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.float-gallery-item:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+/* ─────────────────────────────────────────────
+   Contact: Scanner Line Animation
+───────────────────────────────────────────── */
+.scanner-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d3bbff, transparent);
+  position: absolute;
+  width: 100%;
+  animation: scan 4s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+/* ─────────────────────────────────────────────
+   Contact: Pulse Dot
+───────────────────────────────────────────── */
+.pulse-dot {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(211, 187, 255, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(211, 187, 255, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(211, 187, 255, 0);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Contact: Terminal Text Cursor Blink
+───────────────────────────────────────────── */
+.terminal-text {
+  border-right: 2px solid #d3bbff;
+  animation: blink 0.8s step-end infinite;
+}
+
+@keyframes blink {
+  from, to { border-color: transparent; }
+  50% { border-color: #d3bbff; }
+}
+
+/* ─────────────────────────────────────────────
+   Contact: Form Focus States
+───────────────────────────────────────────── */
+.cosmic-input:focus,
+.cosmic-textarea:focus,
+.cosmic-select:focus {
+  outline: none;
+  border-color: #4C1D95 !important;
+  box-shadow: 0 0 15px rgba(76, 29, 149, 0.3);
+}
+
+/* ─────────────────────────────────────────────
+   Material Symbols Icon Font Variation
+───────────────────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-size: inherit;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ─────────────────────────────────────────────
+   Nebula Glow Orbs (decorative)
+───────────────────────────────────────────── */
+.nebula-glow {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(76, 29, 149, 0.1) 0%, transparent 70%);
+  filter: blur(100px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
+   Text Glow for Display Headlines
+───────────────────────────────────────────── */
+.text-glow {
+  text-shadow: 0 0 30px rgba(211, 187, 255, 0.4), 0 0 60px rgba(76, 29, 149, 0.2);
+}
+
+/* ─────────────────────────────────────────────
+   Scrollbar for custom scrollable sections
+───────────────────────────────────────────── */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(11, 13, 23, 0.1);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4C1D95;
+  border-radius: 10px;
+}
+
+/* ─────────────────────────────────────────────
+   Nebula Orbit Rings Animation
+───────────────────────────────────────────── */
+@keyframes spin-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: translate(-50%, -50%) rotate(360deg); }
+  to { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+.orbit-ring-1 {
+  animation: spin-slow 20s linear infinite;
+}
+
+.orbit-ring-2 {
+  animation: spin-slow-reverse 15s linear infinite;
+}
