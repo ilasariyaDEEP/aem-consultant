@@ -3,9 +3,9 @@ import type { Config } from 'tailwindcss'
 const config: Config = {
   darkMode: 'class',
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{ts,tsx,mdx}',
+    './src/components/**/*.{ts,tsx,mdx}',
+    './src/app/**/*.{ts,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -81,14 +81,14 @@ const config: Config = {
         'label-md': ['"JetBrains Mono"', 'monospace'],
       },
       fontSize: {
-        'display-lg': ['64px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
-        'display-lg-mobile': ['40px', { lineHeight: '1.2', fontWeight: '700' }],
-        'headline-lg': ['32px', { lineHeight: '1.3', fontWeight: '600' }],
-        'headline-md': ['24px', { lineHeight: '1.4', fontWeight: '500' }],
-        'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }],
-        'body-md': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
-        'label-caps': ['12px', { lineHeight: '1.2', letterSpacing: '0.1em', fontWeight: '500' }],
-        'label-md': ['14px', { lineHeight: '1.4', fontWeight: '400' }],
+        'display-lg': ['52px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '1.2', fontWeight: '700' }],
+        'headline-lg': ['28px', { lineHeight: '1.3', fontWeight: '600' }],
+        'headline-md': ['22px', { lineHeight: '1.4', fontWeight: '500' }],
+        'body-lg': ['17px', { lineHeight: '1.6', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '1.5', fontWeight: '400' }],
+        'label-caps': ['11px', { lineHeight: '1.2', letterSpacing: '0.1em', fontWeight: '500' }],
+        'label-md': ['13px', { lineHeight: '1.4', fontWeight: '400' }],
       },
       borderRadius: {
         sm: '0.25rem',

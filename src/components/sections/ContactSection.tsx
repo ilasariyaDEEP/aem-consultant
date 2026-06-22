@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { usePortfolioStore } from '@/store/usePortfolioStore'
-import { Radio, Info, Terminal, Loader2, CheckCircle, Send, Share2, AtSign, Globe } from 'lucide-react'
+import { Radio, Info, Terminal, Loader2, CheckCircle, Send, Share2, AtSign, Globe, X, Briefcase, MapPin, Award, ChevronDown, Check } from 'lucide-react'
 import type { ContactFormData } from '@/types'
 
 const SUBJECT_OPTIONS = [
-  'Professional Collaboration',
-  'Astronomy Inquiry',
+  'AEM Contract Enquiry',
+  'Freelance Collaboration',
   'Technical Consultation',
-  'General Transmission',
+  'Astronomy / Stargazing',
+  'General Enquiry',
 ] as const
 
 const CONTACT_INFO = [
@@ -29,22 +30,22 @@ const CONTACT_INFO = [
     iconBg: 'bg-primary/10',
     iconColor: 'text-primary',
     label: 'Orbital Sector',
-    value: 'Ahmedabad, IN (IST UTC+5:30)',
+    value: 'Mumbai, Maharashtra, India (IST UTC+5:30)',
     href: null,
     IconComponent: Globe,
   },
 ] as const
 
 const SOCIAL_LINKS = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/deepkumar-ilasariya/' },
-  { label: 'GitHub', href: 'https://github.com/' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ilasariyadeep13/' },
+  { label: 'GitHub', href: 'https://github.com/ilasariyadeep' },
   { label: 'Instagram', href: 'https://www.instagram.com/galactic.shots/' },
 ] as const
 
 const DEFAULT_FORM: ContactFormData = {
   name: '',
   email: '',
-  subject: 'Professional Collaboration',
+  subject: 'AEM Contract Enquiry',
   message: '',
   highPriority: false,
 }
@@ -52,35 +53,29 @@ const DEFAULT_FORM: ContactFormData = {
 export default function ContactSection() {
   const { contactFormStatus, setContactFormStatus } = usePortfolioStore()
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Star map state
-  const starMapRef = useRef<HTMLDivElement>(null)
-  const [coords, setCoords] = useState<{ x: string; y: string }>({ x: '00.00', y: '00.00' })
-  const [pin, setPin] = useState<{ x: number; y: number; visible: boolean }>({
-    x: 0,
-    y: 0,
-    visible: false,
-  })
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
-  const handleStarMapMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>): void => {
-      if (!starMapRef.current) return
-      const rect = starMapRef.current.getBoundingClientRect()
-      const x = (((e.clientX - rect.left) / rect.width) * 100).toFixed(2)
-      const y = (((e.clientY - rect.top) / rect.height) * 100).toFixed(2)
-      setCoords({ x, y })
-    },
-    []
-  )
-
-  const handleStarMapDoubleClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>): void => {
-      if (!starMapRef.current) return
-      const rect = starMapRef.current.getBoundingClientRect()
-      setPin({ x: e.clientX - rect.left, y: e.clientY - rect.top, visible: true })
-    },
-    []
-  )
+  const handleSelectOption = useCallback((option: typeof SUBJECT_OPTIONS[number]) => {
+    setFormData((prev) => ({
+      ...prev,
+      subject: option,
+    }))
+    setIsDropdownOpen(false)
+  }, [])
 
   const handleInputChange = useCallback(
     (
@@ -100,22 +95,42 @@ export default function ContactSection() {
       e.preventDefault()
       setContactFormStatus('submitting')
 
-      // Simulate async submission
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      setContactFormStatus('success')
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
 
-      // Reset after success display
-      setTimeout(() => {
-        setContactFormStatus('idle')
-        setFormData(DEFAULT_FORM)
-        setPin((prev) => ({ ...prev, visible: false }))
-      }, 3000)
+        if (!response.ok) {
+          throw new Error('API submission failed')
+        }
+
+        setContactFormStatus('success')
+
+        // Reset after success display
+        setTimeout(() => {
+          setContactFormStatus('idle')
+          setFormData(DEFAULT_FORM)
+        }, 3000)
+      } catch (err) {
+        console.error('Failed to send message:', err)
+        setContactFormStatus('error')
+
+        // Reset back to idle after 3 seconds
+        setTimeout(() => {
+          setContactFormStatus('idle')
+        }, 3000)
+      }
     },
-    [setContactFormStatus]
+    [formData, setContactFormStatus]
   )
 
   const isSubmitting = contactFormStatus === 'submitting'
   const isSuccess = contactFormStatus === 'success'
+  const isError = contactFormStatus === 'error'
 
   return (
     <section
@@ -145,13 +160,11 @@ export default function ContactSection() {
               </div>
 
               <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-starlight-white leading-none text-glow">
-                Send a<br />
-                <span className="text-primary italic">Signal</span>
+                Get in Touch
               </h1>
 
               <p className="font-body-lg text-body-lg text-secondary-fixed-dim max-w-md">
-                Establishing a secure line across the digital void. Use the terminal below to
-                initiate communication or track my current orbital position.
+                Always happy to connect. Feel free to reach out and I will get back to you.
               </p>
             </div>
 
@@ -166,108 +179,72 @@ export default function ContactSection() {
               </div>
               <div className="space-y-4 font-label-md text-label-md">
                 <div className="flex justify-between">
-                  <span className="text-secondary-fixed-dim">Status:</span>
-                  <span className="text-primary terminal-text">READY_FOR_DATA</span>
+                  <span className="text-secondary-fixed-dim">Availability:</span>
+                  <span className="text-primary terminal-text">OPEN TO CONNECT</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-secondary-fixed-dim">Encryption:</span>
-                  <span className="text-starlight-white">End-to-End Quantum</span>
+                  <span className="text-secondary-fixed-dim">Timezone:</span>
+                  <span className="text-starlight-white">IST (UTC +5:30) - APAC / EMEA</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-secondary-fixed-dim">Signal Strength:</span>
-                  <div className="flex gap-1 items-end">
-                    <div className="w-1 h-3 bg-primary" />
-                    <div className="w-1 h-4 bg-primary" />
-                    <div className="w-1 h-5 bg-primary" />
-                    <div className="w-1 h-2 bg-secondary/30" />
-                  </div>
+                <div className="flex justify-between">
+                  <span className="text-secondary-fixed-dim">Response Time:</span>
+                  <span className="text-starlight-white">Within 24 Hours</span>
                 </div>
               </div>
             </div>
 
             {/* Tip card */}
             <div className="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 bg-void-black/60 glass-panel">
-              <Info className="text-cosmic-teal w-6 h-6" />
+              <Info className="text-cosmic-teal w-6 h-6 shrink-0" />
               <p className="font-label-md text-label-md text-secondary">
-                Tip: Double-click the star map to pin your origin coordinates before sending.
+                Preferred engagements: AEM content operations, workflow automation, multilingual CMS, collaborations.
               </p>
             </div>
           </div>
 
           {/* ─── Right Column ─── */}
           <div className="lg:col-span-7 flex flex-col gap-8">
-            {/* Interactive Star Map */}
+            {/* Current Status Card */}
             <div
-              ref={starMapRef}
-              id="star-map"
-              className="glass-panel h-80 relative overflow-hidden group rounded-xl"
-              onMouseMove={handleStarMapMouseMove}
-              onDoubleClick={handleStarMapDoubleClick}
-              role="img"
-              aria-label="Interactive star map — double-click to pin origin"
+              className="glass-panel p-8 relative overflow-hidden rounded-xl flex flex-col justify-center min-h-[320px]"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-void-black/80 to-transparent pointer-events-none" />
-
-              {/* Coordinates display */}
-              <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-                <span className="font-label-caps text-label-caps text-starlight-white bg-deep-navy/80 px-2 py-1 border border-primary/30">
-                  Sector: 7G-Delta
-                </span>
-                <div className="font-label-md text-label-md text-primary font-mono tabular-nums">
-                  X: {coords.x} Y: {coords.y}
-                </div>
-              </div>
-
-              {/* Pin marker */}
-              {pin.visible && (
-                <div
-                  className="absolute z-20 pointer-events-none"
-                  style={{
-                    left: pin.x,
-                    top: pin.y,
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                >
-                  <div className="w-4 h-4 bg-primary rounded-full pulse-dot" />
-                  <div className="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-void-black font-label-caps text-[10px] px-2 py-0.5 rounded">
-                    Origin Marked
+              <h3 className="font-headline-md text-headline-md text-starlight-white mb-6 border-b border-outline-variant/30 pb-3 uppercase tracking-wider">
+                Current Status
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 font-body-md text-body-md">
+                {[
+                  { label: 'Role', val: 'AEM Solutions Consultant', Icon: Briefcase, color: 'text-primary' },
+                  { label: 'Location', val: 'Mumbai, India (Remote)', Icon: MapPin, color: 'text-cosmic-teal' },
+                  { label: 'Markets', val: 'Global Projects', Icon: Globe, color: 'text-primary' },
+                  { label: 'Certificate', val: 'Adobe Certified Expert', Icon: Award, color: 'text-cosmic-teal' },
+                ].map((item) => (
+                  <div key={item.label} className="flex gap-4 p-4 rounded-lg bg-white/5 border border-white/10 hover:border-primary/30 transition-all duration-300">
+                    <div className={`w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 ${item.color}`}>
+                      <item.Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-secondary-fixed-dim font-label-caps text-xs tracking-wider mb-1">{item.label}</span>
+                      <span className="text-starlight-white font-semibold leading-snug">{item.val}</span>
+                    </div>
                   </div>
-                </div>
-              )}
-
-              {/* Decorative star dots */}
-              {[
-                { top: '20%', left: '15%', size: 2 },
-                { top: '60%', left: '30%', size: 1 },
-                { top: '35%', left: '55%', size: 2 },
-                { top: '70%', left: '70%', size: 1 },
-                { top: '15%', left: '80%', size: 2 },
-                { top: '50%', left: '90%', size: 1 },
-              ].map((star, i) => (
-                <div
-                  key={i}
-                  className="absolute rounded-full bg-starlight-white opacity-40"
-                  style={{ top: star.top, left: star.left, width: star.size, height: star.size }}
-                  aria-hidden="true"
-                />
-              ))}
-
-              <div className="absolute bottom-4 right-4 z-10">
-                <span className="font-label-caps text-label-caps text-secondary-fixed-dim uppercase tracking-widest text-[10px]">
-                  Positioning System v2.4
-                </span>
+                ))}
               </div>
             </div>
 
             {/* Signal Composition Form */}
             <div className="glass-panel p-8 md:p-10 flex flex-col gap-8 rounded-xl">
-              <div className="flex items-center gap-4">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Terminal className="text-primary w-6 h-6" />
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Terminal className="text-primary w-6 h-6" />
+                  </div>
+                  <h2 className="font-headline-md text-headline-md text-starlight-white">
+                    Signal Composition
+                  </h2>
                 </div>
-                <h2 className="font-headline-md text-headline-md text-starlight-white">
-                  Signal Composition
-                </h2>
+                <p className="text-sm text-secondary border-l-2 border-primary/50 pl-4 py-1">
+                  Always happy to connect with teams working on interesting AEM challenges. Feel free to reach out.
+                </p>
               </div>
 
               <form
@@ -275,13 +252,13 @@ export default function ContactSection() {
                 onSubmit={handleSubmit}
                 className="grid grid-cols-1 md:grid-cols-2 gap-6"
               >
-                {/* Originator ID */}
+                {/* Your Name */}
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="contact-name"
                     className="font-label-caps text-label-caps text-secondary uppercase"
                   >
-                    Originator ID
+                    Your Name
                   </label>
                   <input
                     id="contact-name"
@@ -295,13 +272,13 @@ export default function ContactSection() {
                   />
                 </div>
 
-                {/* Frequency */}
+                {/* Your Email */}
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="contact-email"
                     className="font-label-caps text-label-caps text-secondary uppercase"
                   >
-                    Frequency
+                    Your Email
                   </label>
                   <input
                     id="contact-email"
@@ -315,27 +292,56 @@ export default function ContactSection() {
                   />
                 </div>
 
-                {/* Subject Payload */}
-                <div className="md:col-span-2 flex flex-col gap-2">
+                {/* Enquiry Type */}
+                <div className="md:col-span-2 flex flex-col gap-2" ref={dropdownRef}>
                   <label
-                    htmlFor="contact-subject"
+                    htmlFor="contact-subject-trigger"
                     className="font-label-caps text-label-caps text-secondary uppercase"
                   >
-                    Subject Payload
+                    Enquiry Type
                   </label>
-                  <select
-                    id="contact-subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className="cosmic-select bg-surface-container/40 border border-outline-variant/30 p-4 font-body-md text-on-surface rounded-lg transition-all focus:bg-surface-container/60 appearance-none"
-                  >
-                    {SUBJECT_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    {/* Custom Dropdown Trigger */}
+                    <button
+                      id="contact-subject-trigger"
+                      type="button"
+                      onClick={() => setIsDropdownOpen((prev) => !prev)}
+                      className={`cosmic-select w-full flex items-center justify-between bg-surface-container/40 border p-4 pr-5 font-body-md text-on-surface rounded-lg transition-all focus:bg-surface-container/60 cursor-pointer text-left ${
+                        isDropdownOpen 
+                          ? 'border-primary shadow-[0_0_15px_rgba(76,29,149,0.3)] bg-surface-container/60' 
+                          : 'border-outline-variant/30'
+                      }`}
+                    >
+                      <span>{formData.subject}</span>
+                      <ChevronDown className={`w-5 h-5 text-secondary transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-primary' : ''}`} />
+                    </button>
+
+                    {/* Custom Dropdown Menu Panel */}
+                    {isDropdownOpen && (
+                      <div className="absolute left-0 right-0 mt-2 z-50 glass-panel border border-outline-variant/30 rounded-lg shadow-2xl overflow-hidden custom-dropdown-panel">
+                        <div className="py-1 bg-void-black/95 divide-y divide-outline-variant/10">
+                          {SUBJECT_OPTIONS.map((opt) => {
+                            const isSelected = formData.subject === opt
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => handleSelectOption(opt)}
+                                className={`w-full flex items-center justify-between px-5 py-3.5 text-left font-body-md transition-colors hover:bg-primary/10 ${
+                                  isSelected 
+                                    ? 'bg-primary/5 text-primary font-semibold' 
+                                    : 'text-secondary-fixed-dim hover:text-starlight-white'
+                                }`}
+                              >
+                                <span>{opt}</span>
+                                {isSelected && <Check className="w-4 h-4 text-primary shrink-0" />}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Message Content */}
@@ -353,14 +359,14 @@ export default function ContactSection() {
                     required
                     value={formData.message}
                     onChange={handleInputChange}
-                    placeholder="Enter your signal parameters..."
+                    placeholder="Tell me about your project or requirement..."
                     className="cosmic-textarea bg-surface-container/40 border border-outline-variant/30 p-4 font-body-md text-on-surface rounded-lg transition-all focus:bg-surface-container/60 placeholder:text-outline-variant/60 resize-none"
                   />
                 </div>
 
                 {/* Actions row */}
                 <div className="md:col-span-2 flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
-                  {/* High priority checkbox */}
+                  {/* Mark as urgent */}
                   <div className="flex items-center gap-3">
                     <input
                       id="urgency"
@@ -374,17 +380,19 @@ export default function ContactSection() {
                       htmlFor="urgency"
                       className="font-label-md text-label-md text-secondary-fixed-dim"
                     >
-                      High priority transmission
+                      Mark as urgent
                     </label>
                   </div>
 
                   {/* Submit button */}
                   <button
                     type="submit"
-                    disabled={isSubmitting || isSuccess}
+                    disabled={isSubmitting || isSuccess || isError}
                     className={`group relative inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full font-label-caps text-label-caps font-bold overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(211,187,255,0.4)] disabled:opacity-80 disabled:cursor-not-allowed ${
                       isSuccess
                         ? 'bg-cosmic-teal text-void-black'
+                        : isError
+                        ? 'bg-rose-500 text-white'
                         : 'bg-primary text-on-primary-fixed'
                     }`}
                   >
@@ -393,13 +401,23 @@ export default function ContactSection() {
 
                     <span className="relative z-10">
                       {isSubmitting
-                        ? 'Broadcasting...'
+                        ? 'Sending...'
                         : isSuccess
-                        ? 'Signal Delivered'
-                        : 'Broadcast Signal'}
+                        ? 'Message Sent'
+                        : isError
+                        ? 'Failed to Send'
+                        : 'Send Message'}
                     </span>
 
-                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : isSuccess ? <CheckCircle className="w-5 h-5" /> : <Send className="w-5 h-5" />}
+                    {isSubmitting ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : isSuccess ? (
+                      <CheckCircle className="w-5 h-5" />
+                    ) : isError ? (
+                      <X className="w-5 h-5" />
+                    ) : (
+                      <Send className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </form>

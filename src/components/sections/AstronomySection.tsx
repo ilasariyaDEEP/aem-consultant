@@ -1,98 +1,115 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Sparkles, Rocket, Telescope, ExternalLink, GraduationCap, Calendar, Medal, BadgeCheck, Award, Users, Microscope } from 'lucide-react'
+import { Sparkles, Rocket, ExternalLink, GraduationCap, Medal, BadgeCheck, Award, Users, MapPin, Camera } from 'lucide-react'
 import type { GalleryItem, CertCard } from '@/types'
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
-    id: 'orion',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB40QzPWWwzc87bDjc-0FtfmQed7po_0TKOrRdODuaKr9hp88-5SHBihQ4egiw2P9r_tspFspVpZLGGMeJgddyk29H0x_nBP04o-venFmnNFNdYHc_G1RuJHvrnue5ZCGqToWOONjZEqeKQRPQNFgWYeq3U9f49oMUKtcgKHySkOA_GDqGilSumOZuoZXu-feOuvE0vMsHiWqt2vvDPxlYGOjzOhM6vyGy5N09EJRMMTjgpkln-a4raQcLqPhkFAuiJ37ISrF9zpcc',
-    alt: 'Orion Nebula M42',
-    caption: 'Nebula M42',
-    meta: 'Light travel time: 1,344 Years',
+    id: 'river-trails',
+    src: '/images/celestial-1.webp',
+    alt: 'Milky Way over Spiti River Valley, Kaza',
+    caption: 'Spiti River Trails',
+    location: 'Spiti River Valley, Kaza',
+    meta: 'Sony Alpha | 20mm | f/1.8 | 20s | ISO 3200',
+    aspectClass: 'aspect-[3/4]',
   },
   {
-    id: 'andromeda',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCpO7_UT7HuWLnGf10BVENUlPXcQdhdaTF-YC4VPZk38izfbpe7AWxwHX-8pWn8qTy9K3fKaW4tpH8IRi5N9IWikwAVVG3NcdkXY05Neqw9r7SVCROwnRUw0XTDX52YcAGMPpYSwWz8b2Q2zI1E-chxildHQ1RLnn_d3RX-N1KfytdS4ws1qdyyEaWH6AX4BxKB4Iul5-rJDmE6TPwe8vMc6F2VJVanq5vBRfNRWS3VYY2ymRr7dR1bmrCx_sv0pjBvPoHbNZdRrhI',
-    alt: 'Andromeda Galaxy M31',
-    caption: 'Andromeda Galaxy',
-    meta: 'Distance: 2.5 Million LY',
+    id: 'key-monastery',
+    src: '/images/celestial-2.jpg',
+    alt: 'Milky Way behind tree near Key Monastery, Spiti',
+    caption: 'Milky Way over Key Monastery',
+    location: 'Key Monastery Outskirts, Spiti',
+    meta: 'Sony Alpha | 24mm | f/2.8 | 15s | ISO 6400',
+    aspectClass: 'aspect-[4/3]',
   },
   {
-    id: 'pleiades',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT9Z2KqDRhbnUC1Gjh30AbWsmXkE8WrMR5jEcok-stwBnFkGa49zoyU9gXFog9_3O8Yq-E8myAHs2ENEwGUenjybgpAAwSv0XP5EWtpTORRE8mRmemKTDEhqvK0miofdCa19tp_zxtMJRGVm6No8-WtYebXph43MYFkOZ5BWnfi2w_-kbuDFsAhNTdTy9Uqgi1JUZhJ_PL65AmK6KUlbLSL4vNsNChsN_voV9_T6KHIKN4iSBGMJ6DOFE3TC3WHGMVjvAcqQgj3Ho',
-    alt: 'Pleiades Star Cluster M45',
-    caption: 'Star Cluster M45',
-    meta: 'Exposure: 4 Hours Cumulative',
+    id: 'langza-buddha',
+    src: '/images/celestial-3.webp',
+    alt: 'Langza Buddha Statue under the Milky Way',
+    caption: 'Langza Buddha Statue',
+    location: 'Langza Village, Spiti',
+    meta: 'Sony Alpha | 14mm | f/2.8 | 25s | ISO 3200',
+    aspectClass: 'aspect-[3/4]',
   },
 ]
 
-const CERTS: (CertCard & { IconComponent: React.ElementType })[] = [
-  {
-    id: 'nss',
-    icon: 'military_tech',
-    iconColor: 'text-primary',
-    label: 'ORGANIZATION | IMPACT',
-    value: 'NSS Head (2019–2020)',
-    span: 2,
-    tags: ['ORGANIZATION', 'IMPACT'],
-    IconComponent: Medal,
-  },
-  {
-    id: 'adobe',
-    icon: 'verified',
-    iconColor: 'text-cosmic-teal',
-    label: 'ADOBE CERTIFIED',
-    value: 'AEM Sites Business Practitioner',
-    IconComponent: BadgeCheck,
-  },
-  {
-    id: 'jhu',
-    icon: 'workspace_premium',
-    iconColor: 'text-cosmic-teal',
-    label: 'JOHNS HOPKINS',
-    value: 'Data Science & R Programming',
-    IconComponent: Award,
-  },
-  {
-    id: 'ltc',
-    icon: 'groups',
-    iconColor: 'text-primary',
-    label: 'LTC',
-    value: 'Leadership Training Camp – UoM',
-    IconComponent: Users,
-  },
-  {
-    id: 'idf',
-    icon: 'diversity_3',
-    iconColor: 'text-nebula-purple',
-    label: 'INDIAN DEVELOPMENT FOUNDATION',
-    value: 'Student Leadership Programme',
-    span: 2,
-    IconComponent: Users,
-  },
-  {
-    id: 'python',
-    icon: 'biotech',
-    iconColor: 'text-cosmic-teal',
-    label: "YUVI PATEL'S",
-    value: 'Python for Data Science',
-    IconComponent: Microscope,
-  },
-]
+const CERTS: Array<{
+  id: string
+  label: string
+  value: string
+  subtitle: string
+  date?: string
+  span?: number
+  iconColor: string
+  IconComponent: React.ElementType
+  link?: string
+}> = [
+    {
+      id: 'adobe',
+      label: 'ADOBE CERTIFIED',
+      value: 'AEM Sites Business Practitioner',
+      subtitle: 'Adobe Experience Manager - Expert Level',
+      date: 'Issued May 2023 · Valid May 2028',
+      span: 2,
+      iconColor: 'text-cosmic-teal',
+      IconComponent: BadgeCheck,
+      link: 'https://certification.adobe.com/credential/verify/f4b994d6-55cc-11f0-9b2a-42010a400fc3',
+    },
+    {
+      id: 'jhu-web',
+      label: 'JOHNS HOPKINS',
+      value: 'HTML, CSS & JavaScript',
+      subtitle: 'Coursera - Johns Hopkins University',
+      iconColor: 'text-primary',
+      IconComponent: Award,
+    },
+    {
+      id: 'jhu-ds',
+      label: 'JOHNS HOPKINS',
+      value: 'R Programming & Data Science Toolbox',
+      subtitle: 'Coursera - Johns Hopkins University',
+      iconColor: 'text-cosmic-teal',
+      IconComponent: Award,
+    },
+    {
+      id: 'nss',
+      label: 'LEADERSHIP',
+      value: 'NSS Head of Department (2019–2020)',
+      subtitle: 'Led 100+ volunteers, University of Mumbai',
+      iconColor: 'text-primary',
+      IconComponent: Medal,
+    },
+    {
+      id: 'ltc',
+      label: 'LTC',
+      value: 'Leadership Training Camp',
+      subtitle: 'University of Mumbai - NSS Division',
+      iconColor: 'text-nebula-purple',
+      IconComponent: Users,
+    },
+    {
+      id: 'idf',
+      label: 'IDF',
+      value: 'Student Leadership Programme',
+      subtitle: 'Indian Development Foundation',
+      span: 2,
+      iconColor: 'text-cosmic-teal',
+      IconComponent: Users,
+    },
+  ]
 
-const VOLUNTEERING_IMAGE =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuDGXjvMsC-fsh7U_xATupcVGCAwe-Ntgh1wwfPcaCFrPll62hEQqjYYQfmSUMmeuAu-lyYk4JvSryMb6ESYC5-_8BIaqEfueI_2M7JMOGnmpW8fCKHWmhKP-_ynxdAN314un3zejoX39QWWWKumLW48hUP0qBT8ikhrBxWOrZtEDSwCAHuPPCvSrXPw0eOy0i45hJOmPMfuJDdYQtsRftD889FLP3PiB2WcTbP7oSoGhwwXK8Myuj1bRzK6wiWL4XGb0yNjxRp6pDY'
+const VOLUNTEERING_IMAGE = '/images/volunteering-at-arc.webp'
 
 export default function AstronomySection() {
   return (
     <section
       id="astronomy"
       className="py-24 px-gutter max-w-container-max mx-auto space-y-24"
+      data-seo-keywords="astronomy volunteer Mumbai, ARC Educators, ISRO certified astronomy, astrocamp telescope operator, space science outreach India, stargazing Mumbai"
     >
       {/* ─── Astronomy Hero ─── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center min-h-[400px]">
-        <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[400px]">
+        <div className="lg:col-span-7 space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-nebula-purple/20 border border-nebula-purple/40">
             <Sparkles className="text-primary w-4 h-4" />
             <span className="font-label-caps text-label-caps text-primary">Scientific Explorer</span>
@@ -104,9 +121,9 @@ export default function AstronomySection() {
           </h2>
 
           <p className="font-body-lg text-body-lg text-secondary leading-relaxed max-w-lg">
-            Beyond Adobe Experience Manager and technical workflows lies a passion for the infinite.
-            From capturing the faint light of distant galaxies to educating the next generation of
-            celestial observers.
+            Beyond enterprise CMS and workflow automation lies a passion for the infinite.
+            Astrophotography demands the same precision and patience as production deployments - long exposures,
+            zero room for error, and the reward of seeing something extraordinary emerge from the dark.
           </p>
 
           <div className="flex gap-4 pt-4">
@@ -124,43 +141,31 @@ export default function AstronomySection() {
           </div>
         </div>
 
-        {/* Hero glass card with live sim badge */}
-        <div className="relative h-[400px] w-full rounded-2xl overflow-hidden glass-card group border-nebula-purple/30">
-          <div className="absolute inset-0 bg-gradient-to-t from-deep-navy via-transparent to-transparent opacity-60" />
-          {/* Animated stars inside the card */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative w-48 h-48">
-              <div
-                className="absolute inset-0 border border-primary/20 rounded-full"
-                style={{ animation: 'spin 20s linear infinite' }}
-              />
-              <div
-                className="absolute inset-6 border border-nebula-purple/30 rounded-full"
-                style={{ animation: 'spin 14s linear infinite reverse' }}
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Telescope className="text-primary w-16 h-16 opacity-60" />
-              </div>
-            </div>
-          </div>
-          <div className="absolute bottom-6 left-6 p-4 glass-panel rounded-xl">
-            <p className="font-label-caps text-label-caps text-starlight-white">
-              Live Simulation: Galactic Drift
-            </p>
+        <div className="lg:col-span-5 w-full">
+          {/* Hero card showing Gazing into the Cosmic Void image */}
+          <div className="relative aspect-[3/4] w-full max-w-sm mx-auto rounded-2xl overflow-hidden border border-nebula-purple/30 group">
+            <Image
+              src="/images/gazing-into-the-cosmic-void.webp"
+              alt="Gazing into the Cosmic Void"
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              priority
+            />
           </div>
         </div>
       </div>
 
       {/* ─── Volunteering ─── */}
-      <div className="space-y-12" id="volunteering">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-outline-variant/20 pb-8">
+      <div
+        className="space-y-12"
+        id="volunteering"
+        data-seo-keywords="astronomy volunteer Mumbai, ARC Educators, ISRO certified astronomy, astrocamp telescope operator, space science outreach India, stargazing Mumbai"
+      >
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-outline-variant/20 pb-8">
           <div>
             <h2 className="font-headline-lg text-headline-lg text-starlight-white">
-              Community &amp; Education
+              Volunteering at ARC Educators
             </h2>
-            <p className="font-body-md text-body-md text-secondary mt-2">
-              Empowering minds through ARC Educators
-            </p>
           </div>
           <Link
             href="https://www.arceducators.in/"
@@ -168,52 +173,66 @@ export default function AstronomySection() {
             rel="noopener noreferrer"
             className="font-label-caps text-label-caps text-primary hover:underline flex items-center gap-2"
           >
-            Visit Website
+            Learn About ARC Educators
             <ExternalLink className="w-4 h-4" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Main volunteering card */}
-          <div className="md:col-span-2 glass-card rounded-2xl p-8 space-y-6">
-            <div className="flex items-start gap-6">
-              <div className="w-20 h-20 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                <GraduationCap className="text-primary w-10 h-10" strokeWidth={1} />
+          <div className="md:col-span-2 glass-card rounded-2xl p-8 space-y-6 flex flex-col justify-between">
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-4 sm:gap-6">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                  <GraduationCap className="text-primary w-8 h-8 sm:w-10 sm:h-10" strokeWidth={1} />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <h3 className="font-headline-md text-headline-md text-starlight-white leading-tight">
+                    Volunteering at ARC Educators
+                  </h3>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-deep-navy/20 border border-nebula-purple/20 rounded-full font-label-md text-starlight-white text-xs w-fit">
+                    <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                    ISRO Certified Organisation
+                  </div>
+                </div>
               </div>
-              <div>
-                <h3 className="font-headline-md text-headline-md text-starlight-white">
-                  Volunteering at ARC Educators
-                </h3>
-                <p className="font-body-md text-body-md text-secondary mt-2">
-                  Dedicated to fostering a love for STEM and providing quality educational resources.
-                  My role involves coordinating workshops and managing digital presence to reach
-                  aspiring students across India.
-                </p>
-              </div>
+              <p className="font-body-md text-body-md text-secondary">
+                ARC Educators is an ISRO-certified astronomy outreach organisation dedicated to making space science accessible to everyone. Since July 2023, I have been volunteering as a telescope operator and sky guide at astrocamps across Mumbai. I set up equipment, help visitors locate and identify celestial objects, and explain the science behind what they see in real time.
+              </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10 flex flex-col h-full">
                 <h4 className="font-label-caps text-label-caps text-primary mb-2">
-                  Digital Strategy
+                  Telescope Operations
                 </h4>
-                <p className="text-sm text-secondary">
-                  Leveraging AEM expertise to optimize educational content delivery for remote learners.
+                <p className="text-sm text-secondary flex-grow">
+                  Setting up and operating telescopes at astrocamps, calibrating equipment, and guiding visitors through live views of planets, star clusters, nebulae, and deep sky objects.
                 </p>
               </div>
-              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10">
-                <h4 className="font-label-caps text-label-caps text-primary mb-2">Mentorship</h4>
-                <p className="text-sm text-secondary">
-                  Guiding underprivileged students through technical basics and career paths in IT.
+              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10 flex flex-col h-full">
+                <h4 className="font-label-caps text-label-caps text-primary mb-2">
+                  Sky Education
+                </h4>
+                <p className="text-sm text-secondary flex-grow">
+                  Answering visitor questions and explaining astronomical concepts during live telescope viewings. Sharing insights on planets, constellations, and the scale of the universe in real time.
+                </p>
+              </div>
+              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10 flex flex-col h-full">
+                <h4 className="font-label-caps text-label-caps text-primary mb-2">
+                  Outreach Since
+                </h4>
+                <p className="text-sm text-secondary flex-grow">
+                  July 2023 to Present. 2 plus years contributing to ARC Educators mission of science literacy and astronomy awareness across India.
                 </p>
               </div>
             </div>
           </div>
 
           {/* Volunteering image */}
-          <div className="glass-card rounded-2xl overflow-hidden group relative min-h-[250px]">
+          <div className="glass-card rounded-2xl overflow-hidden group relative aspect-square w-full">
             <Image
               src={VOLUNTEERING_IMAGE}
-              alt="Students engaged in a technology workshop"
+              alt="Volunteering at ARC Educators - telescope operation and sky guiding"
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -231,36 +250,29 @@ export default function AstronomySection() {
           {CERTS.map((cert) => (
             <div
               key={cert.id}
-              className={`glass-card p-8 rounded-2xl hover:bg-white/5 transition-colors flex flex-col justify-between ${cert.span === 2 ? 'md:col-span-2' : ''
+              className={`glass-card p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 flex flex-col justify-between ${cert.span === 2 ? 'md:col-span-2' : ''
                 }`}
             >
               <div>
                 <cert.IconComponent className={`w-8 h-8 mb-4 block ${cert.iconColor}`} />
-                {cert.tags ? (
-                  <>
-                    <h3 className="font-headline-md text-headline-md">{cert.value}</h3>
-                    <p className="font-body-md text-secondary mt-2">
-                      National Service Scheme leadership at Mithibai College, leading a brigade of
-                      100+ volunteers for social causes.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <h4 className="font-label-caps text-label-caps text-secondary">{cert.label}</h4>
-                    <p className="font-body-md text-starlight-white font-bold mt-2">{cert.value}</p>
-                  </>
-                )}
+                <h4 className="font-label-caps text-label-caps text-primary mb-2">{cert.label}</h4>
+                <h3 className="font-headline-md text-headline-md text-starlight-white mb-2">{cert.value}</h3>
+                <p className="font-body-md text-secondary leading-relaxed">{cert.subtitle}</p>
               </div>
-              {cert.tags && (
-                <div className="flex gap-2 mt-6">
-                  {cert.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-caps text-[10px]"
+              {(cert.date || cert.link) && (
+                <div className="mt-4 pt-4 border-t border-white/5 font-label-md text-secondary-fixed-dim text-xs flex justify-between items-center gap-4">
+                  <span>{cert.date || ''}</span>
+                  {cert.link && (
+                    <a
+                      href={cert.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline flex items-center gap-1 font-label-caps text-[10px] tracking-wider shrink-0"
                     >
-                      {tag}
-                    </span>
-                  ))}
+                      Verify Badge
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
                 </div>
               )}
             </div>
@@ -275,80 +287,49 @@ export default function AstronomySection() {
             Celestial Observations
           </h2>
           <p className="font-body-md text-secondary max-w-2xl mx-auto">
-            Capturing the photons that traveled millions of years to reach my lens. A study of
-            deep-space objects through the telescopic eye.
+            Capturing the photons that traveled millions of years to reach my lens.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           {GALLERY_ITEMS.map((item) => (
             <div
               key={item.id}
-              className="float-gallery-item rounded-2xl overflow-hidden aspect-square group relative"
+              className="glass-card rounded-2xl overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-500 group flex flex-col shadow-xl"
             >
-              <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-navy/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
-                <p className="font-label-caps text-label-caps text-primary">{item.caption}</p>
-                <p className="text-xs text-secondary mt-1">{item.meta}</p>
+              {/* Image Container with natural aspect ratio */}
+              <div className={`relative w-full ${item.aspectClass} overflow-hidden bg-void-black/20`}>
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+              </div>
+
+              {/* Text Block below the image */}
+              <div className="p-5 space-y-3 bg-slate-950/40 backdrop-blur-md border-t border-white/5 flex-grow">
+                <h4 className="font-headline-sm text-starlight-white text-base font-bold tracking-wide group-hover:text-primary transition-colors">
+                  {item.caption}
+                </h4>
+
+                <div className="space-y-2 text-xs text-secondary-fixed-dim">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
+                    <span>{item.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Camera className="w-3.5 h-3.5 text-cosmic-teal shrink-0" />
+                    <span className="font-mono">{item.meta}</span>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ─── Stargazing CTA ─── */}
-      <div className="glass-card rounded-3xl p-12 relative overflow-hidden text-center max-w-4xl mx-auto border border-nebula-purple/30">
-        {/* Decorative orbit rings */}
-        <div
-          className="absolute top-1/2 left-1/2 w-[800px] h-[800px] border border-nebula-purple/10 rounded-full"
-          style={{
-            transform: 'translate(-50%, -50%)',
-            animation: 'spin 20s linear infinite',
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute top-1/2 left-1/2 w-[600px] h-[600px] border border-nebula-purple/20 rounded-full"
-          style={{
-            transform: 'translate(-50%, -50%)',
-            animation: 'spin 15s linear infinite reverse',
-          }}
-          aria-hidden="true"
-        />
-
-        <div className="relative z-10 space-y-6">
-          <h3 className="font-headline-lg text-headline-lg">
-            Interested in a Stargazing Session?
-          </h3>
-          <p className="font-body-md text-secondary">
-            I frequently host informal sessions to explain the night sky. Whether you&apos;re a
-            beginner or a fellow enthusiast, let&apos;s connect and explore the stars together.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="mailto:ilasariyadeep13@gmail.com?subject=Stargazing Session Request"
-              className="bg-primary text-on-primary px-8 py-3 rounded-full font-label-caps text-label-caps flex items-center gap-2 hover:shadow-[0_0_20px_rgba(211,187,255,0.4)] transition-all"
-            >
-              Schedule a Session
-              <Calendar className="w-4 h-4" />
-            </a>
-            <Link
-              href="https://www.arceducators.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-outline px-8 py-3 rounded-full font-label-caps text-label-caps hover:bg-white/5 transition-all text-secondary hover:text-starlight-white"
-            >
-              Inquire about ARC Workshops
-            </Link>
-          </div>
-        </div>
-      </div>
     </section>
   )
 }

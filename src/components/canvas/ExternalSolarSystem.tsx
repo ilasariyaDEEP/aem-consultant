@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 // @ts-ignore
 import { initSolarSystem } from './external-solar-system/src/solarSystemEngine';
 import { X } from 'lucide-react';
@@ -21,14 +22,24 @@ const planetData: Record<string, any> = {
 export default function ExternalSolarSystem() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedPlanet, setSelectedPlanet] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const engineRef = useRef<{ cleanup: () => void, resetCamera: () => void } | null>(null);
 
   useEffect(() => {
+    setMounted(true);
     if (!containerRef.current) return;
 
     // Initialize the Vanilla Three.js Solar System
     engineRef.current = initSolarSystem(containerRef.current, (planetName: string) => {
-      setSelectedPlanet(planetName);
+      if (planetName) {
+        // Find matching key case-insensitively to prevent any casing or white-space mismatches
+        const matchedKey = Object.keys(planetData).find(
+          (key) => key.toLowerCase() === planetName.trim().toLowerCase()
+        );
+        setSelectedPlanet(matchedKey || planetName);
+      } else {
+        setSelectedPlanet(null);
+      }
     });
 
     return () => {
@@ -49,28 +60,41 @@ export default function ExternalSolarSystem() {
     <div className="absolute inset-0 z-0">
       <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
-      {/* Planet Info Modal overlay */}
-      {selectedPlanet && (
-        <div className="absolute top-24 right-8 w-80 bg-slate-900/80 backdrop-blur-md border border-slate-700 p-6 rounded-2xl shadow-2xl z-50 text-white animate-in fade-in slide-in-from-right-4 duration-300">
-          <button
+      {mounted && typeof document !== 'undefined' && selectedPlanet && createPortal(
+        <>
+          {/* Backdrop for mobile to prevent clashing overlay text */}
+          <div
             onClick={handleClose}
-            className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            className="fixed inset-0 bg-void-black/75 backdrop-blur-sm z-[900] md:hidden cursor-pointer"
+            aria-hidden="true"
+          />
 
-          <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            {selectedPlanet}
-          </h3>
+          {/* Planet Info Modal overlay wrapper */}
+          <div className="fixed inset-0 flex items-center justify-center md:justify-end md:items-start md:p-8 pointer-events-none z-[1000]">
+            <div className="relative w-[calc(100%-2.5rem)] max-w-xs md:w-80 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-6 rounded-2xl shadow-2xl text-white pointer-events-auto animate-in fade-in zoom-in-95 md:slide-in-from-right-4 duration-300 md:mt-24">
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                aria-label="Close planet info"
+              >
+                <X className="w-5 h-5" />
+              </button>
 
-          <div className="space-y-3 text-sm text-slate-300 mt-4">
-            <p><strong>Radius:</strong> {planetData[selectedPlanet]?.radius}</p>
-            <p><strong>Orbit:</strong> {planetData[selectedPlanet]?.orbit}</p>
-            <p className="mt-4 pt-4 border-t border-slate-700 leading-relaxed">
-              {planetData[selectedPlanet]?.info}
-            </p>
+              <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                {selectedPlanet}
+              </h3>
+
+              <div className="space-y-3 text-sm text-slate-300 mt-4">
+                <p><strong>Radius:</strong> {planetData[selectedPlanet]?.radius || 'N/A'}</p>
+                <p><strong>Orbit:</strong> {planetData[selectedPlanet]?.orbit || 'N/A'}</p>
+                <p className="mt-4 pt-4 border-t border-slate-700/80 leading-relaxed">
+                  {planetData[selectedPlanet]?.info || 'No detailed data available for this planetary body.'}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        </>,
+        document.body
       )}
     </div>
   );

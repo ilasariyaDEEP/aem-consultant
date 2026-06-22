@@ -84,7 +84,7 @@ function createShader(
 
 export default function WebGLBackground(): null {
   const animFrameRef = useRef<number>(0)
-  const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+  const mouseRef = useRef<{ x: number; y: number }>({ x: -10000, y: -10000 })
 
   useEffect(() => {
     // Create and insert canvas into document
@@ -142,6 +142,22 @@ export default function WebGLBackground(): null {
     }
     window.addEventListener('mousemove', handleMouseMove)
 
+    // Touch support for mobile/tablets
+    const handleTouch = (e: TouchEvent): void => {
+      if (e.touches.length > 0) {
+        mouseRef.current = {
+          x: e.touches[0].clientX,
+          y: window.innerHeight - e.touches[0].clientY,
+        }
+      }
+    }
+    const handleTouchEnd = (): void => {
+      mouseRef.current = { x: -10000, y: -10000 }
+    }
+    window.addEventListener('touchstart', handleTouch, { passive: true })
+    window.addEventListener('touchmove', handleTouch, { passive: true })
+    window.addEventListener('touchend', handleTouchEnd, { passive: true })
+
     const handleResize = (): void => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -161,6 +177,9 @@ export default function WebGLBackground(): null {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchstart', handleTouch)
+      window.removeEventListener('touchmove', handleTouch)
+      window.removeEventListener('touchend', handleTouchEnd)
       window.removeEventListener('resize', handleResize)
       cancelAnimationFrame(animFrameRef.current)
       canvas.remove()

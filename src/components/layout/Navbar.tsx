@@ -7,13 +7,14 @@ import { Menu, X } from 'lucide-react'
 import { usePortfolioStore } from '@/store/usePortfolioStore'
 
 const NAV_LINKS: Array<{ label: string; href: string; sectionId: string }> = [
+  { label: 'Home', href: '#home', sectionId: 'home' },
   { label: 'About', href: '#about', sectionId: 'about' },
   { label: 'Experience', href: '#experience', sectionId: 'experience' },
-  { label: 'Astronomy', href: '#astronomy', sectionId: 'astronomy' },
+  { label: 'Projects', href: '#projects', sectionId: 'projects' },
   { label: 'Contact', href: '#contact', sectionId: 'contact' },
 ]
 
-const SECTION_IDS = ['home', 'about', 'experience', 'skills', 'astronomy', 'contact']
+const SECTION_IDS = ['home', 'about', 'experience', 'projects', 'skills', 'astronomy', 'contact']
 
 export default function Navbar() {
   const { activeSection, isMobileMenuOpen, setActiveSection, toggleMobileMenu, closeMobileMenu } =
@@ -68,7 +69,7 @@ export default function Navbar() {
           onClick={(e) => handleNavClick(e, '#home')}
           className="font-headline-md text-headline-md text-starlight-white tracking-tighter hover:text-primary transition-colors"
         >
-          Deepkumar I.
+          Deep Ilasariya
         </Link>
 
         {/* Desktop Nav */}
@@ -80,7 +81,7 @@ export default function Navbar() {
               onClick={(e) => handleNavClick(e, href)}
               className={`relative transition-colors ${
                 activeSection === sectionId
-                  ? 'text-primary font-bold after:content-[""] after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full'
+                  ? 'text-primary font-bold'
                   : 'text-secondary-fixed-dim hover:text-starlight-white'
               }`}
             >
@@ -129,7 +130,7 @@ export default function Navbar() {
           ))}
           <button
             onClick={handleConnectClick}
-            className="bg-primary text-on-primary font-label-caps px-6 py-3 rounded-full hover:bg-nebula-purple hover:text-starlight-white transition-all duration-300 text-left"
+            className="bg-primary text-on-primary text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full hover:bg-nebula-purple hover:text-starlight-white transition-all duration-300 w-fit self-start"
           >
             Connect
           </button>

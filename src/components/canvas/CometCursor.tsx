@@ -20,6 +20,13 @@ export default function CometCursor(): null {
   const particlesRef = useRef<Particle[]>([])
 
   useEffect(() => {
+    // Detect touch device to disable custom cursor and improve mobile performance
+    const isTouch =
+      window.matchMedia('(pointer: coarse)').matches ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0
+    if (isTouch) return
+
     // Create and append comet cursor canvas
     const canvas = document.createElement('canvas')
     canvas.id = 'comet-cursor-canvas'

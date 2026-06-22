@@ -31,6 +31,11 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+nav ul,
+nav li {
+  list-style: none;
+}
+
 * {
   cursor: none !important;
 }
@@ -88,49 +93,26 @@ body {
 }
 
 /* ─────────────────────────────────────────────
-   Hero Profile: Black Hole Hover Effect
-───────────────────────────────────────────── */
-.black-hole-container {
+   Hero Profile: Professional Smooth Hover
+   ───────────────────────────────────────────── */
+.profile-image-container {
   position: relative;
-  perspective: 1000px;
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
-.black-hole-target {
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
+.profile-container:hover .profile-image-container {
+  border-color: rgba(0, 242, 255, 0.5); /* Smooth color shift to cyan */
+  box-shadow: 0 8px 30px rgba(76, 29, 149, 0.4), 0 0 15px rgba(0, 242, 255, 0.2);
 }
 
-.black-hole-container:hover .black-hole-target {
-  transform: scale(0.05) rotate(720deg);
-  filter: brightness(2) contrast(1.5) hue-rotate(90deg) blur(5px);
-  opacity: 0;
+.profile-image-el {
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.black-hole-event-horizon {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    transparent 30%,
-    rgba(76, 29, 149, 0.8) 50%,
-    #05070a 70%
-  );
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  z-index: 20;
-  mix-blend-mode: screen;
-}
-
-.black-hole-container:hover .black-hole-event-horizon {
-  opacity: 1;
-  animation: swirl-distort 1s linear infinite;
-}
-
-@keyframes swirl-distort {
-  from { transform: rotate(0deg) scale(1); }
-  to { transform: rotate(360deg) scale(1.5); }
+.profile-container:hover .profile-image-el {
+  transform: scale(1.05);
 }
 
 /* ─────────────────────────────────────────────
@@ -310,4 +292,134 @@ body {
 
 .orbit-ring-2 {
   animation: spin-slow-reverse 15s linear infinite;
+}
+
+/* ─────────────────────────────────────────────
+   Mobile Responsiveness Tweaks (< 768px)
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* 1. HERO — PLANET ANIMATION */
+  .hero-planet, 
+  .solar-system, 
+  .planet-animation, 
+  [class*="planet"], 
+  [class*="solar"] {
+    display: none !important;
+  }
+
+  /* 2. HERO — BODY TEXT */
+  .hero-body-full {
+    display: none !important;
+  }
+  .mobile-hero-text {
+    display: block !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* 3. HERO — BADGE */
+  .hero-badge { 
+    font-size: 0.6rem !important; 
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+
+  /* 4. HERO — FONT SIZES */
+  h1 { 
+    font-size: 2rem !important; 
+    line-height: 1.2 !important; 
+  }
+  .hero-subheadline { 
+    font-size: 1rem !important; 
+    line-height: 1.4 !important; 
+  }
+
+  /* 5. CURRENT ROLE CARD — TITLE FIX */
+  .role-title { 
+    font-size: 1.4rem !important; 
+    line-height: 1.3 !important; 
+  }
+
+  /* 6. SKILLS SECTION — BAR CHART GRAPHIC */
+  .skills-chart, 
+  .bar-chart, 
+  [class*="chart"],
+  [class*="bars"] { 
+    display: none !important; 
+  }
+
+  /* 7. INSTRUMENT PANEL — ALIGNMENT FIX */
+  .instrument-item, 
+  .panel-item { 
+    width: 100% !important;
+    text-align: left !important;
+    padding-left: 1rem !important;
+    list-style: none !important;
+  }
+  .instrument-item::before { 
+    display: none !important; 
+  }
+  .panel-bullet {
+    display: none !important;
+  }
+
+  /* 8. GENERAL SPACING */
+  section,
+  #home,
+  #about,
+  #experience,
+  #skills,
+  #galactic-shots,
+  #astronomy,
+  #contact {
+    padding: 2.5rem 1.25rem !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 9. SKILL TAGS — HERO SECTION */
+  .hero-tags { 
+    display: flex !important; 
+    flex-wrap: wrap !important; 
+    gap: 0.5rem !important; 
+  }
+  .hero-tag { 
+    width: auto !important; 
+    padding: 0.4rem 0.8rem !important;
+  }
+
+  /* 10. BUTTONS — HERO */
+  .hero-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+  .hero-btn { 
+    width: 100% !important; 
+    text-align: center !important; 
+    justify-content: center !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Custom Dropdown Animation
+───────────────────────────────────────────── */
+.custom-dropdown-panel {
+  animation: dropdown-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
+}
+
+@keyframes dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: scaleY(0.9) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
 }

@@ -2,32 +2,51 @@
 
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import type { TimelineEntry, EngagementCard } from '@/types'
-import { BadgeCheck, Rocket, Telescope, ShieldCheck, Users, Settings, Handshake, BarChart, Zap } from 'lucide-react'
+import { BadgeCheck, Rocket, Telescope, ShieldCheck, Users, Settings, Handshake, BarChart, Zap, ExternalLink } from 'lucide-react'
 
 const TIMELINE: TimelineEntry[] = [
   {
-    id: 'wcs-team-lead',
-    role: 'WCS Team Lead',
-    company: 'Dept',
-    period: 'January 2023 – Present',
+    id: 'current-consultant',
+    role: 'AEM Content Operations Consultant (Contract)',
+    company: 'Enterprise Digital Agency (Remote)',
+    period: 'July 2025 – Present',
     isCurrent: true,
     bullets: [
-      'Overseeing a 40-member team, handling performance tracking, and daily operations ensuring high-quality deliverables.',
-      'Driving automation initiatives, including package creation automation to significantly enhance team efficiency.',
-      'Coordinating with clients to align project goals and expectations across diverse market requirements.',
+      'Managing multilingual AEM site operations across 20+ language variations using Live Copy and Blueprint structures for an enterprise insurance client.',
+      'Streamlined content fragment authoring workflows, reducing blog publishing time from 60 minutes to 20 minutes through ACS Commons automation and process redesign.',
+      'Handling full content deployment pipeline and stakeholder coordination across markets.',
     ],
+    tags: ['AEM Cloud', 'EDS', 'Automation', 'Remote'],
+  },
+  {
+    id: 'wcs-team-lead',
+    role: 'Web Content Specialist - Team Lead',
+    company: 'DEPT®',
+    period: 'January 2023 – June 2025 (2 years 6 months)',
+    isCurrent: false,
+    bullets: [
+      'Co-led a 40-member Web Content Services team, managing task distribution, performance tracking, and delivery operations across 8+ enterprise clients simultaneously.',
+      'Reduced content authoring time by 60% by introducing ACS Commons-based automation, App Script workflows, and Excel-driven tooling, eliminating repetitive manual tasks across all client projects.',
+      'Built internal operational tools including leave management tracking system, content fragment batch processors, and automated deployment scripts for a team of 40+ people.',
+      'Managed full AEM deployment pipeline (DEV → UAT → Stage → Production) with Dispatcher and CDN coordination across global enterprise clients including HDFC Bank, Tata AIA, Medtronic, and QuidelOrtho.',
+      'Conducted AEM authoring training, SEO best practices workshops, and WCAG accessibility sessions, raising team capability and reducing onboarding time.',
+    ],
+    tags: ['AEM Sites', 'Team Lead', 'Automation', 'Enterprise'],
   },
   {
     id: 'aem-content-author',
-    role: 'AEM Content Author',
-    company: 'Dept',
-    period: 'July 2022 – December 2022',
+    role: 'Web Content Specialist',
+    company: 'DEPT®',
+    period: 'July 2022 – December 2022 (6 months)',
     isCurrent: false,
     bullets: [
-      'Developed and maintained web content in AEM, collaborating with cross-functional teams to ensure accuracy, relevance, and optimization for SEO and user experience.',
-      'Managed multi-environment deployments for high-availability sites.',
+      'Authored and published structured digital content using AEM Sites for global enterprise websites across 20+ languages.',
+      'Managed multi-environment content deployments across DEV, Stage, and Production, ensuring accurate and timely publishing for high-availability sites.',
+      'Applied SEO best practices and WCAG accessibility standards to all content outputs, contributing to improved page performance and compliance across client properties.',
     ],
+    tags: ['AEM Sites', 'SEO', 'Multilingual', 'Deployment'],
   },
 ]
 
@@ -35,59 +54,66 @@ const ENGAGEMENTS: EngagementCard[] = [
   {
     id: 'medtronic',
     client: 'Medtronic',
-    headline: 'Medtronic 75',
-    body: 'Extensive experience in inheritance, rollout, and dynamic media workflows. Aligned content strategies with SEO best practices for diverse markets.',
-    tags: ['Rollout', 'SEO'],
+    headline: 'Global Digital Experience',
+    body: 'Managed AEM content inheritance, rollout configurations, and Dynamic Media workflows across global healthcare markets. Aligned content architecture with SEO best practices and regional compliance requirements.',
+    tags: ['HEALTHCARE', 'Rollout', 'Dynamic Media', 'SEO'],
+  },
+  {
+    id: 'quidelortho',
+    client: 'QuidelOrtho',
+    headline: 'Multilingual Site Operations',
+    body: 'Managed multilingual website content across 20+ language variations using AEM Live Copy and Blueprint structures, ensuring consistent global branding and optimized page performance across markets.',
+    tags: ['HEALTHCARE', 'Live Copy', 'i18n', '20+ Languages'],
   },
   {
     id: 'tata-aia',
     client: 'Tata AIA',
-    headline: 'Life Insurance',
-    body: 'Handled multiple environments including development, staging, and production. Enhanced expertise in package deployment and operational landscape.',
-    tags: ['Ops', 'Deployment'],
+    headline: 'Multi-Environment Deployment',
+    body: 'Managed complete content deployment pipeline across DEV, Stage, and Production environments. Oversaw package creation, deployment workflows, and coordinated with development teams to ensure zero-downtime releases.',
+    tags: ['INSURANCE', 'Deployment', 'Package Mgmt', 'Prod Pipeline'],
   },
   {
-    id: 'hdfc',
+    id: 'hdfc-bank',
     client: 'HDFC Bank',
-    headline: 'Workflow Automation',
-    body: 'Managed timelines and streamlined workflows as team lead. Increased efficiency by automating the content fragment authoring process.',
-    tags: ['Leadership', 'Automation'],
+    headline: 'Enterprise Authoring Operations',
+    body: 'Led content authoring operations for one of India\'s largest banking websites. Managed delivery timelines, maintained content quality standards, and reduced publishing overhead through workflow restructuring and team coordination.',
+    tags: ['BANKING', 'Team Lead', 'Workflow Ops'],
   },
   {
-    id: 'oona',
+    id: 'oona-insurance',
     client: 'Oona',
-    headline: 'Automation Success',
-    body: 'Automated fragment creation, reducing blog article authoring time from 1 hour to just 20 minutes. Streamlined package creation through automated deployment to pre-prod environments, eliminating manual execution.',
-    tags: ['Automation Success'],
+    headline: 'Workflow Automation - 66% Time Reduction',
+    body: 'Streamlined the content fragment authoring process, reducing blog article publishing time from 60 minutes to 20 minutes. Automated package deployment to pre-production environments, eliminating manual execution steps entirely.',
+    tags: ['INSURANCE', 'SINGAPORE', 'Automation', 'ACS Commons', 'EDS'],
     span: 2,
     metrics: [
-      { value: '-66%', label: 'Time Reduced' },
+      { value: '-66%', label: 'Authoring Time' },
       { value: 'Auto', label: 'Deployment' },
     ],
     icon: Zap,
   },
   {
-    id: 'rosewood',
-    client: 'Rosewood',
-    headline: 'Luxury Hospitality',
-    body: 'Gathered requirements for property launches, delegated tasks, and provided solutions for high-end boutique properties.',
-    tags: ['Hospitality', 'Boutique'],
+    id: 'hdfc-life',
+    client: 'HDFC Life',
+    headline: 'Scalable Content Architecture',
+    body: 'Coordinated directly with business stakeholders to gather authoring requirements and translate them into scalable AEM content fragment structures. Managed task allocation and project tracking via Jira.',
+    tags: ['INSURANCE', 'CF Modeling', 'Stakeholder Mgmt', 'Jira'],
+  },
+  {
+    id: 'indiafirst-life',
+    client: 'IndiaFirst Life',
+    headline: 'Cross-Client Automation & Delegation',
+    body: 'Managed end-to-end client communication, translated business requirements into authoring workflows, and improved team efficiency by introducing content fragment automation processes across the engagement.',
+    tags: ['INSURANCE', 'Automation', 'Client Comms', 'Team Ops'],
+  },
+  {
+    id: 'rosewood-hotels',
+    client: 'Rosewood Hotels',
+    headline: 'Luxury Property Digital Operations',
+    body: 'Oversaw digital content operations for global luxury hotel properties, gathering pre-launch requirements, delegating tasks across the authoring team, and ensuring high-quality content delivery for new property go-lives.',
+    tags: ['HOSPITALITY', 'Launch Ops', 'Content Strategy'],
   },
 ]
-
-const TECHNICAL_SKILLS = [
-  'Adobe Experience Manager (AEM)',
-  'Live Copy & Blueprinting',
-  'Experience Fragments',
-  'SEO Optimization',
-  'Agile Methodologies (Jira)',
-  'JSON Authoring',
-  'Responsive Web Layout',
-  'Dynamic Media',
-]
-
-const ENGAGEMENT_IMAGE =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuAoO7-zbv-LvK3udiwjBPI8xN1xAtL9VRt06LVakhisAQkSXWFcBEfMpvyZBZcm0AA4UVR5LiSFzhqWavNRM_6W70ZbNfqm-sqqBrWBoQ4FM61oI8hG3296Ax0dyU2icXD9slho-esFVINjbUraiUZOylcCXI99HMzj21rzIToOuIc4ysw8Sed4HGaXMlREPi5QPj7BzBx0IPovicZxm3XyuxWBdwku21HGfMCBQ-0A9Fh1yhDVhiRYdu7spWx4x-B0XLJyMDID5aQ'
 
 export default function ExperienceSection() {
   const timelineItemsRef = useRef<NodeListOf<Element> | null>(null)
@@ -123,47 +149,86 @@ export default function ExperienceSection() {
       id="experience"
       className="py-24 px-gutter max-w-container-max mx-auto space-y-24"
     >
-      {/* ─── Career Timeline ─── */}
+      {/* ─── Global Enterprise Impact ─── */}
       <div>
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-          <div className="max-w-2xl">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+          <div className="max-w-3xl">
             <h2 className="font-headline-lg text-headline-lg text-starlight-white mb-4">
-              Professional Engagements
+              Global Enterprise Impact
             </h2>
             <p className="text-secondary">
-              A curated timeline of high-impact digital transformations for global industry leaders.
+              Delivering measurable outcomes across banking, insurance, healthcare, and hospitality, spanning 3+ years and 8 enterprise engagements.
             </p>
           </div>
-          <div className="font-label-caps text-primary border-b border-primary/30 pb-2">
-            VIEW ALL CASE STUDIES
-          </div>
+        </div>
+
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+          {[
+            { val: '8+', lbl: 'Enterprise Clients' },
+            { val: '20+', lbl: 'Language Rollouts' },
+            { val: '60%', lbl: 'Publishing Time Reduction' },
+            { val: '3', lbl: 'Industry Sectors' },
+          ].map((stat) => (
+            <div key={stat.lbl} className="px-6 py-4 bg-white/5 border border-white/10 rounded-lg text-center">
+              <div className="text-primary font-bold text-2xl md:text-3xl">{stat.val}</div>
+              <div className="text-secondary-fixed-dim text-xs font-label-caps mt-1">{stat.lbl}</div>
+            </div>
+          ))}
         </div>
 
         {/* Bento hero grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-24">
           {/* Current role card — wide */}
           <div className="md:col-span-8 glass-card p-1 rounded-xl overflow-hidden group border-0">
-            <div className="relative h-full bg-deep-navy/30 p-8 flex flex-col justify-end min-h-[400px]">
-              <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjNYXZBlx-r2se1UI5kyuxKCba65YYeYIUg75z6p7O_CGOeJiVUMMYXwMZMaKDuLaSlyDvUbTBNa4dPmPEEhMKlD0F_fH9CUqi7_YaUcqDfD9JyWZij2l75ZreNQiEsyEWO1Vc6pUcKs6RvpTnljnsYuXVS97I9pFO2mk61SkfChb_QxF2fecWfFrD4xAxGx3fjN7y4zbcWpKNZAcUT5yR5U_97GZZFzbXPbhXKS2RJoLhgBON67zMbU4z1TW6ATjiAfWEFwT5-uE"
-                alt="Team Lead at WCS"
-                fill
-                sizes="(max-width: 768px) 100vw, 66vw"
-                className="object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-700"
-              />
+            <div className="relative h-full bg-deep-navy/30 p-8 flex flex-col justify-end min-h-[400px] overflow-hidden">
+              {/* Abstract nebula gradient */}
+              <div className="absolute inset-0 z-0" aria-hidden="true">
+                <div className="absolute inset-0 bg-gradient-to-br from-void-black via-nebula-purple/20 to-deep-navy" />
+                <div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-nebula-purple/30"
+                  style={{ filter: 'blur(60px)' }} />
+                <div className="absolute -bottom-8 -left-8 w-48 h-48 rounded-full bg-cosmic-teal/20"
+                  style={{ filter: 'blur(50px)' }} />
+                {[...Array(18)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute rounded-full bg-starlight-white"
+                    style={{
+                      width: i % 3 === 0 ? 2 : 1,
+                      height: i % 3 === 0 ? 2 : 1,
+                      top: `${10 + (i * 37) % 80}%`,
+                      left: `${5 + (i * 53) % 90}%`,
+                      opacity: 0.2 + (i % 5) * 0.1,
+                    }}
+                  />
+                ))}
+                <div className="absolute inset-0 opacity-5"
+                  style={{ backgroundImage: 'linear-gradient(rgba(211,187,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(211,187,255,0.5) 1px, transparent 1px)', backgroundSize: '40px 40px' }}
+                />
+              </div>
+
               <div className="relative z-10">
                 <span className="font-label-caps text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
                   CURRENT ROLE
                 </span>
-                <h3 className="font-headline-lg text-headline-lg text-starlight-white mt-4 mb-2">
-                  Team Lead at WCS (Dept)
+                <h3 className="font-headline-lg text-headline-lg text-starlight-white mt-4 mb-2 role-title">
+                  <span className="block">AEM Content Operations Consultant</span>
+                  <span className="block text-primary/80 mt-1 text-base sm:text-lg">Enterprise Digital Agency</span>
                 </h3>
-                <p className="text-secondary max-w-lg mb-6">
-                  Leading a 40-member team in automating AEM content fragments, reducing authoring
-                  time by 60% and ensuring global brand consistency across 20+ languages.
+                <p className="text-secondary max-w-lg mb-5">
+                  Managing multilingual AEM site operations, workflow automation, and content deployment pipelines for enterprise clients.
                 </p>
+                {/* Stat chips */}
+                <div className="flex flex-wrap gap-3 mb-5">
+                  {[{ val: '3+ Years', lbl: 'Enterprise AEM' }, { val: '20+', lbl: 'Languages' }, { val: '66%', lbl: 'Time Saved' }].map((stat) => (
+                    <div key={stat.lbl} className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-center">
+                      <div className="text-primary font-bold text-base">{stat.val}</div>
+                      <div className="text-secondary-fixed-dim text-[10px] font-label-caps">{stat.lbl}</div>
+                    </div>
+                  ))}
+                </div>
                 <div className="flex gap-3 flex-wrap">
-                  {['AEM SITES', 'AUTOMATION', 'LEADERSHIP'].map((tag) => (
+                  {['AEM CLOUD', 'EDS', 'AUTOMATION'].map((tag) => (
                     <span
                       key={tag}
                       className="px-3 py-1 bg-white/5 border border-white/10 rounded-full font-label-md text-cosmic-teal"
@@ -203,52 +268,6 @@ export default function ExperienceSection() {
               </ul>
             </div>
           </div>
-
-          {/* Astronomy enthusiast card */}
-          <div className="md:col-span-4 glass-card p-1 rounded-xl group border-0">
-            <div className="bg-deep-navy/30 p-8 h-full">
-              <h4 className="font-label-caps text-primary mb-4">ASTRONOMY ENTHUSIAST</h4>
-              <div className="aspect-video bg-void-black/40 rounded-lg mb-6 overflow-hidden relative border border-white/5 flex items-center justify-center">
-                <Telescope className="text-nebula-purple w-12 h-12 opacity-30" />
-              </div>
-              <p className="text-secondary">
-                Exploring the Andromeda galaxy through the lens of scientific curiosity and
-                pixel-perfect precision.
-              </p>
-            </div>
-          </div>
-
-          {/* Global impact card */}
-          <div className="md:col-span-8 glass-card p-1 rounded-xl group overflow-hidden border-0">
-            <div className="bg-deep-navy/30 p-8 h-full flex items-center gap-8">
-              <div className="hidden sm:block w-48 h-48 rounded-lg overflow-hidden shrink-0 border border-white/10 relative">
-                <Image
-                  src={ENGAGEMENT_IMAGE}
-                  alt="Global project engagements"
-                  fill
-                  sizes="192px"
-                  className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                />
-              </div>
-              <div>
-                <h3 className="font-headline-md text-headline-md text-starlight-white mb-2">
-                  Global Impact
-                </h3>
-                <p className="text-secondary mb-4">
-                  Driving digital excellence for giants like Medtronic, Tata AIA, and HDFC Bank
-                  through optimized AEM strategies and seamless user experiences.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-xs font-label-caps text-secondary-fixed-dim border border-secondary-fixed-dim/30 px-2 py-1 rounded">
-                    20+ LANGUAGES
-                  </span>
-                  <span className="text-xs font-label-caps text-secondary-fixed-dim border border-secondary-fixed-dim/30 px-2 py-1 rounded">
-                    GLOBAL ROLLOUT
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -261,8 +280,7 @@ export default function ExperienceSection() {
               Career Timeline
             </h2>
             <p className="text-secondary mb-8">
-              A focused trajectory from AEM Content Author to WCS Team Lead at Adobe, managing
-              scale and complexity.
+              A focused trajectory building enterprise AEM expertise, from content authoring to leading multi-client operations.
             </p>
             <div className="glass-card p-6 rounded-xl">
               <div className="flex items-center gap-4 mb-4">
@@ -281,62 +299,82 @@ export default function ExperienceSection() {
             </div>
           </div>
 
-          {/* Timeline entries */}
-          <div className="w-full md:w-2/3 relative pl-12 md:pl-16">
-            {/* Vertical connector */}
-            <div className="absolute left-0 top-0 bottom-0 w-px timeline-connector" aria-hidden="true" />
+          {/* Career Timeline entries */}
+          <div className="w-full md:w-2/3">
+            <div className="relative">
+              {/* Vertical line */}
+              <div
+                className="absolute left-[7px] top-[20px] bottom-0 w-px timeline-connector"
+                aria-hidden="true"
+              />
 
-            <div className="space-y-16">
-              {TIMELINE.map((entry) => (
-                <div key={entry.id} className="relative timeline-item">
-                  {/* Timeline node */}
-                  <div
-                    className={`absolute -left-[37px] md:-left-[53px] top-2 w-4 h-4 rounded-full ring-4 z-10 timeline-node ${
-                      entry.isCurrent
-                        ? 'bg-primary ring-nebula-purple/20 timeline-node-active'
-                        : 'bg-primary ring-nebula-purple/10'
-                    }`}
-                  />
-
-                  <div className="glass-card p-8 rounded-2xl">
-                    <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-2 mb-6">
-                      <div>
-                        <h3 className="font-headline-md text-headline-md text-starlight-white">
-                          {entry.role}
-                        </h3>
-                        <p className="text-primary font-label-md">{entry.company}</p>
-                      </div>
-                      <span
-                        className={`px-4 py-1.5 rounded-full font-label-caps text-label-caps ${
+              <div className="space-y-12">
+                {TIMELINE.map((entry) => (
+                  <div key={entry.id} className="relative timeline-item flex gap-6">
+                    {/* Timeline node */}
+                    <div className="shrink-0 mt-3">
+                      <div
+                        className={`w-4 h-4 rounded-full ring-4 z-10 timeline-node relative ${
                           entry.isCurrent
-                            ? 'bg-nebula-purple/20 text-primary border border-primary/20'
-                            : 'bg-surface-container/40 text-secondary border border-outline-variant/30'
+                            ? 'bg-primary ring-nebula-purple/30 timeline-node-active'
+                            : 'bg-primary/40 ring-nebula-purple/10'
                         }`}
-                      >
-                        {entry.period}
-                      </span>
+                      />
                     </div>
 
-                    <ul className="space-y-4 text-secondary">
-                      {entry.bullets.map((bullet, i) => (
-                        <li key={i} className="flex gap-3">
-                          <span className="text-primary shrink-0">
-                            {i === 0 ? <Users className="w-5 h-5" /> : i === 1 ? <Settings className="w-5 h-5" /> : <Handshake className="w-5 h-5" />}
-                          </span>
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="glass-card p-6 sm:p-8 rounded-2xl flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-5">
+                        <div className="min-w-0">
+                          <h3 className="font-headline-md text-headline-md text-starlight-white">
+                            {entry.role}
+                          </h3>
+                          <p className="text-primary font-label-md">{entry.company}</p>
+                        </div>
+                        <span
+                          className={`shrink-0 px-3 py-1.5 rounded-xl sm:rounded-full font-label-caps text-label-caps sm:whitespace-nowrap whitespace-normal w-fit max-w-full text-left sm:text-center ${
+                            entry.isCurrent
+                              ? 'bg-nebula-purple/20 text-primary border border-primary/20'
+                              : 'bg-surface-container/40 text-secondary border border-outline-variant/30'
+                          }`}
+                        >
+                          {entry.period}
+                        </span>
+                      </div>
+
+                      <ul className="space-y-3 text-secondary">
+                        {entry.bullets.map((bullet, i) => (
+                          <li key={i} className="flex gap-3">
+                            <span className="text-primary shrink-0 mt-0.5">
+                              {i === 0 ? <Users className="w-4 h-4" /> : i === 1 ? <Settings className="w-4 h-4" /> : <Handshake className="w-4 h-4" />}
+                            </span>
+                            <span className="text-sm leading-relaxed">{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {entry.tags && (
+                        <div className="flex flex-wrap gap-2 mt-5 pt-4 border-t border-outline-variant/10">
+                          {entry.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2.5 py-0.5 bg-white/5 border border-white/10 rounded-full font-label-md text-xs text-cosmic-teal"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* ─── Strategic Engagements ─── */}
-      <div>
+      <div id="projects" className="scroll-mt-24">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12">
           <div>
             <h2 className="font-headline-lg text-headline-lg text-starlight-white">
@@ -422,22 +460,90 @@ export default function ExperienceSection() {
 
       {/* ─── Technical Capabilities ─── */}
       <div className="glass-card p-12 rounded-3xl overflow-hidden relative">
-        <div className="absolute top-0 right-0 p-8 opacity-10" aria-hidden="true">
+        <div className="absolute top-0 right-0 p-8 opacity-10 skills-chart bar-chart" aria-hidden="true">
           <BarChart className="w-32 h-32 text-primary" />
         </div>
-        <div className="relative z-10 max-w-2xl">
-          <h2 className="font-headline-lg text-headline-lg text-starlight-white mb-8">
-            Specialized Technical Capabilities
+        <div className="relative z-10">
+          <h2 className="font-headline-lg text-headline-lg text-starlight-white mb-2">
+            Full AEM Stack - Without Writing Code
           </h2>
-          <div className="flex flex-wrap gap-3">
-            {TECHNICAL_SKILLS.map((skill) => (
-              <span
-                key={skill}
-                className="px-4 py-2 glass-card rounded-full font-label-md text-primary hover:bg-primary/20 transition-colors"
-              >
-                {skill}
-              </span>
-            ))}
+          <p className="text-secondary mb-8">
+            End-to-end expertise across the Adobe Experience Manager ecosystem, from content architecture to production deployment.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Group 1: AEM Core */}
+            <div className="space-y-4">
+              <h3 className="font-headline-sm text-primary border-b border-primary/20 pb-2">AEM Core</h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  'Adobe Experience Manager (AEM Sites)',
+                  'AEM as a Cloud Service',
+                  'Edge Delivery Services (EDS / Franklin)',
+                  'Content Fragment Modeling & Automation',
+                  'Experience Fragment Architecture',
+                  'Dynamic Media',
+                  'ACS Commons Automation',
+                  'Package Deployment (DEV → UAT → Stage → Prod)',
+                  'Dispatcher Configuration & CDN Basics',
+                ].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full font-label-md text-xs text-starlight-white hover:border-primary/50 transition-colors"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Group 2: Content & Strategy */}
+            <div className="space-y-4">
+              <h3 className="font-headline-sm text-primary border-b border-primary/20 pb-2">Content & Strategy</h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  'Multilingual Content Management',
+                  'Live Copy & Blueprint Structures',
+                  'Language Copy & i18n',
+                  'SEO Tag Management & Structured Content',
+                  'WCAG Accessibility Standards',
+                  'JSON Authoring',
+                  'AEM Guides (XML Authoring - basics)',
+                  'Headless CMS Concepts',
+                ].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full font-label-md text-xs text-starlight-white hover:border-primary/50 transition-colors"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Group 3: Operations & Tools */}
+            <div className="space-y-4">
+              <h3 className="font-headline-sm text-primary border-b border-primary/20 pb-2">Operations & Tools</h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  'Jira - Agile Project Coordination',
+                  'Stakeholder Requirement Gathering',
+                  'Dev Ticket Creation & QA Verification',
+                  'App Scripts & Excel Automation',
+                  'Team Operations (40+ member teams)',
+                  'Leave & Resource Tracking Systems',
+                  'ProofHub Project Management',
+                  'Cross-functional Delivery Coordination',
+                ].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full font-label-md text-xs text-starlight-white hover:border-primary/50 transition-colors"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

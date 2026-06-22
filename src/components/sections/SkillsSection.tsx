@@ -1,13 +1,18 @@
 import type { SkillChip } from '@/types'
 
 const SKILLS: SkillChip[] = [
-  { id: 'aem', label: 'Adobe Experience Manager', isPulsing: true },
-  { id: 'html5', label: 'HTML5 Authoring', isPulsing: false },
-  { id: 'json', label: 'JSON & RESTful APIs', isPulsing: false },
-  { id: 'jira', label: 'Jira Agile', isPulsing: false },
-  { id: 'automation', label: 'Content Automation', isPulsing: true },
-  { id: 'seo', label: 'SEO Strategy', isPulsing: false },
-  { id: 'leadership', label: 'Project Leadership', isPulsing: false },
+  { id: 'aem', label: 'Adobe Experience Manager (AEM Sites + Cloud)', isPulsing: true },
+  { id: 'eds', label: 'Edge Delivery Services (EDS)', isPulsing: true },
+  { id: 'cf-ef', label: 'Content Fragment & Experience Fragment', isPulsing: false },
+  { id: 'acs-auto', label: 'ACS Commons & Workflow Automation', isPulsing: true },
+  { id: 'dynamic-media', label: 'Dynamic Media & DAM', isPulsing: false },
+  { id: 'live-copy', label: 'Live Copy / Blueprint / i18n', isPulsing: false },
+  { id: 'dispatcher', label: 'Dispatcher & CDN Configuration', isPulsing: false },
+  { id: 'json-authoring', label: 'JSON & Structured Content Authoring', isPulsing: false },
+  { id: 'jira-stakeholder', label: 'Jira Agile & Stakeholder Management', isPulsing: false },
+  { id: 'app-scripts', label: 'App Scripts & Excel Process Automation', isPulsing: false },
+  { id: 'seo-wcag', label: 'SEO Strategy & WCAG Compliance', isPulsing: false },
+  { id: 'deployment-ops', label: 'Multi-Environment Deployment Operations', isPulsing: true },
 ]
 
 export default function SkillsSection() {
@@ -30,10 +35,10 @@ export default function SkillsSection() {
           {SKILLS.map(({ id, label, isPulsing }) => (
             <div
               key={id}
-              className="px-6 py-3 bg-deep-navy/20 border border-nebula-purple/20 rounded-full font-label-md text-starlight-white hover:border-primary transition-colors flex items-center gap-2 group"
+              className="instrument-item panel-item px-6 py-3 bg-deep-navy/20 border border-nebula-purple/20 rounded-full font-label-md text-starlight-white hover:border-primary transition-colors flex items-center gap-2 group"
             >
               <span
-                className={`w-2 h-2 bg-primary rounded-full ${
+                className={`panel-bullet w-2 h-2 bg-primary rounded-full ${
                   isPulsing ? 'animate-pulse' : ''
                 }`}
               />

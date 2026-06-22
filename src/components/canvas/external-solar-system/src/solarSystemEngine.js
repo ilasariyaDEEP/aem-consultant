@@ -202,13 +202,14 @@ export function initSolarSystem(container, onPlanetClick) {
 
     // For smaller planets, make the hitbox significantly larger relative to their size
     // to allow easy targeting. For larger planets, keep it close to their actual size.
+    // We increase the hitbox sizes significantly to make targeting very forgiving on mobile touch screens
     let hitboxSize = size;
     if (size < 5) {
-      hitboxSize = Math.max(size * 1.8, 6.0);
+      hitboxSize = Math.max(size * 3.5, 12.0);
     } else if (size < 10) {
-      hitboxSize = size * 1.4;
+      hitboxSize = size * 2.2;
     } else {
-      hitboxSize = size * 1.15;
+      hitboxSize = size * 1.4;
     }
     const hitboxGeom = new THREE.SphereGeometry(hitboxSize, 16, 16);
     const hitboxMat = new THREE.MeshBasicMaterial({ visible: false });
@@ -297,17 +298,25 @@ export function initSolarSystem(container, onPlanetClick) {
     mouseDownPos.x = event.clientX;
     mouseDownPos.y = event.clientY;
     mouseDownTime = performance.now();
+    updateMouseCoords(event.clientX, event.clientY);
   }
 
   function onDocumentMouseUp(event) {
+    // Determine the coordinates to use. If event has clientX/clientY, use them.
+    // However, on mobile pointerup, clientX/clientY can sometimes be missing or 0.
+    // If so, fallback to mouseDownPos.
+    const clientX = (event.clientX !== undefined && event.clientX !== 0) ? event.clientX : mouseDownPos.x;
+    const clientY = (event.clientY !== undefined && event.clientY !== 0) ? event.clientY : mouseDownPos.y;
+
     // Only trigger if it was a quick click with minimal movement (not a drag)
-    const moveX = Math.abs(event.clientX - mouseDownPos.x);
-    const moveY = Math.abs(event.clientY - mouseDownPos.y);
+    // We increase the threshold from 5px to 15px to account for normal finger shift during touch taps on mobile
+    const moveX = Math.abs(clientX - mouseDownPos.x);
+    const moveY = Math.abs(clientY - mouseDownPos.y);
     const duration = performance.now() - mouseDownTime;
 
-    if (moveX < 5 && moveY < 5 && duration < 300) {
+    if (moveX < 15 && moveY < 15 && duration < 300) {
       event.preventDefault();
-      updateMouseCoords(event.clientX, event.clientY);
+      updateMouseCoords(clientX, clientY);
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObjects(raycastTargets);
       if (intersects.length > 0) {

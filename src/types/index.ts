@@ -14,6 +14,7 @@ export interface TimelineEntry {
   isCurrent: boolean;
   bullets: string[];
   icon?: string;
+  tags?: string[];
 }
 
 export interface EngagementCard {
@@ -44,6 +45,8 @@ export interface GalleryItem {
   alt: string;
   caption: string;
   meta: string;
+  location?: string;
+  aspectClass?: string;
 }
 
 export interface ReelCard {

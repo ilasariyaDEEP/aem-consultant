@@ -1,46 +1,372 @@
-import Image from 'next/image'
+'use client'
+
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { Play, ExternalLink } from 'lucide-react'
-import type { ReelCard } from '@/types'
+import { Play, X, ExternalLink, Loader2, Volume2, VolumeX } from 'lucide-react'
 
-const INSTAGRAM_URL = 'https://www.instagram.com/galactic.shots/'
+// ─── Types ────────────────────────────────────────────────────────────────────
+interface ReelData {
+  shortcode: string
+  found: boolean
+  thumbnailUrl?: string | null
+  mediaUrl?: string | null
+  permalink?: string
+  caption?: string
+  mediaType?: string
+}
 
-const REEL_CARDS: ReelCard[] = [
+// ─── Static config (aesthetic + reel identity) ────────────────────────────────
+const REEL_CONFIGS = [
   {
-    id: 'andromeda-core',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfB-pFYWUSBa7tyc3C8Vu0tuFwBTnpDdeGVqWvtzM9Xnv9DbkFjs-Tk3z6u-BPx69yVAXR0vbMH2EFZMATKIM-Cm6h3vrtiBHAXi79nV2RS9psokZ5mK2pqER1J84hrTPlwMNiILaJnx8ImrgEQoqYWhX4d_YgaSUdxYpI_6tStsfG3LCJJCCmOXBZLRaWSCkJkCaM-tphJmdJLEy5AINrPYTcT3KHKk8PxhypFVDUvLs3y6SVOXr3HMI7rJmdUnkMG8hpYx5Y84k',
-    alt: 'Andromeda Galaxy Core',
-    title: 'The Andromeda Core',
-    description: 'Capturing the spiral light of our nearest galactic neighbor 2.5 million light-years away.',
-    link: INSTAGRAM_URL,
+    shortcode: 'DVrC0wLAagw',
+    url: 'https://www.instagram.com/reel/DVrC0wLAagw/',
+    title: 'Star Trail',
+    description: 'Long exposure astrophotography capturing Earth\'s rotation written in light across the night sky.',
+    glow: '#7c3aed',
+    particles: '#c4b5fd',
+    gradient: 'radial-gradient(ellipse at 50% 25%, #3b0f8a 0%, #1a0a4a 40%, #05070A 100%)',
   },
   {
-    id: 'pillars-creation',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuADZbFAQUN5P9IqWsO_CHqOmMNqMzr09Gc70tPJuRiIws7bkIwhEZYbFxdGbP5k9Le0G-g03STuqnDXdbdomgr_q8crqoVAWIwTNxTFUuOOAC3SFRPUMbwPg5cSN9Cyb1n5wjjzR6ddmUr0eXK6Uun_s52dLIJM-Aznh_2Kb9Fc7Uzu1N7XNwXLb6PWlx6Yo6kBmdE70YVRjlP9RMcI3dv_SXiqIgmfL2r-9G8xI7BSo90l080cS3NyKY_94o1MFJtfj8NLFQZaf0',
-    alt: 'Pillars of Creation — Eagle Nebula',
-    title: 'Pillars of Creation in 4K',
-    description: 'A high-dynamic range composite of the famous stellar nursery in the Eagle Nebula.',
-    link: INSTAGRAM_URL,
+    shortcode: 'C27pMxFNdpV',
+    url: 'https://www.instagram.com/reel/C27pMxFNdpV/',
+    title: 'Fireball Meteor',
+    description: 'A brilliant fireball meteor capturing a rare streak of cosmic light captured over Dahanu beach.',
+    glow: '#0ea5e9',
+    particles: '#7dd3fc',
+    gradient: 'radial-gradient(ellipse at 50% 30%, #0c3a5c 0%, #0a1628 45%, #05070A 100%)',
   },
   {
-    id: 'moon-motion',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDY8kbfVoDqGXRssRgHSpG7IKxslqeCoFbx1gkczV-1-YnxeD05wXUC3Knd4ZZou4DL_Pn_LOkxYgUtwrav_5M7Y2NzQDkfeZ20eEDXlqv_XWvxb5e4MAz5SJXXDu-Q2Y1vSWCBS_FARkVA8ZU766PIl17lDNQZYPi6XjKFTrXplqdEBmzhXgMBcHDNHAlFLnX2np-IRhMtC2jjMvroxdA7lLn2ImHyabuk00TifqIP-avfmki8oae56-TYBYCiPfiMlnPZSXildOc',
-    alt: 'Moon in Motion Timelapse',
-    title: 'Moon in Motion',
-    description: '48-hour lunar transit timelapse showing the intricate shadows of craters and basins.',
-    link: INSTAGRAM_URL,
+    shortcode: 'C2crxhXtAnK',
+    url: 'https://www.instagram.com/reel/C2crxhXtAnK/',
+    title: 'Night Sky Timelapse',
+    description: 'A mesmerizing star timelapse capturing the celestial rotation and twinkling stars whispering secrets of time.',
+    glow: '#a855f7',
+    particles: '#e9d5ff',
+    gradient: 'radial-gradient(ellipse at 50% 35%, #4a1275 0%, #1f0a35 45%, #05070A 100%)',
   },
   {
-    id: 'orion-belt',
-    src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDqT0Jrcerp6vvZlpq61-jnpR-0Qc9FOQeVe4lhbQxwLPTPx0xknlk0cfY4EPhB2B_P3HsTqU9KtAH6caRP7ukwzBJaH7-naeu7CXK9FnWWhvhRl56SuDSpO5ftwiF78wZchFO1Djiied5sB73VZ-llCNkr6VMag3PvNAyGeLTxy3Bypnp2XnkqTTWPy9pc_sDdodQSVcfkV_0JjXsdXrnTAlp9HuGwdLyZxNLfZ5zgP26b6S2PazDrgmiWMslEyPlO1s00t5kj8a4',
-    alt: "Orion's Belt Widefield",
-    title: "Orion's Belt Widefield",
-    description: 'Exploring the dusty regions and red supergiants in the heart of winter\'s constellation.',
-    link: INSTAGRAM_URL,
+    shortcode: 'DVmPrbRiMMC',
+    url: 'https://www.instagram.com/reel/DVmPrbRiMMC/',
+    title: 'Galactic Voyage',
+    description: 'Where mythology meets the Milky Way, a surreal timelapse at the edge of the world.',
+    glow: '#06b6d4',
+    particles: '#a5f3fc',
+    gradient: 'radial-gradient(ellipse at 50% 20%, #063f4d 0%, #07202b 45%, #05070A 100%)',
   },
 ]
 
+const INSTAGRAM_URL = 'https://www.instagram.com/galactic.shots/'
+
+// ─── Video Modal ──────────────────────────────────────────────────────────────
+function VideoModal({
+  reel,
+  config,
+  onClose,
+}: {
+  reel: ReelData
+  config: (typeof REEL_CONFIGS)[0]
+  onClose: () => void
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [muted, setMuted] = useState(true)
+  const [videoError, setVideoError] = useState(false)
+
+  // Close on Escape key
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [onClose])
+
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !muted
+      setMuted(!muted)
+    }
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[999] flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+
+      {/* Modal content */}
+      <div
+        className="relative z-10 flex flex-col items-center gap-4 animate-in fade-in zoom-in-95 duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <div className="w-full flex justify-end pr-1">
+          <button
+            onClick={onClose}
+            className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors backdrop-blur-md pointer-events-auto"
+          >
+            <X className="w-4 h-4 text-white" />
+          </button>
+        </div>
+
+        {/* Video container — 9:16 */}
+        <div
+          className="relative overflow-hidden rounded-2xl shadow-2xl"
+          style={{
+            width: 'min(340px, 90vw)',
+            aspectRatio: '9 / 16',
+            background: config.gradient,
+            boxShadow: `0 0 60px ${config.glow}40`,
+          }}
+        >
+          {reel.mediaUrl && !videoError ? (
+            <>
+              <video
+                ref={videoRef}
+                src={reel.mediaUrl}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={() => setVideoError(true)}
+              />
+              {/* Mute toggle */}
+              <button
+                onClick={toggleMute}
+                className="absolute bottom-14 right-3 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-black/70 transition-colors pointer-events-auto z-10"
+              >
+                {muted
+                  ? <VolumeX className="w-4 h-4 text-white" />
+                  : <Volume2 className="w-4 h-4 text-white" />
+                }
+              </button>
+            </>
+          ) : (
+            /* Fallback: thumbnail or gradient */
+            <>
+              {reel.thumbnailUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={reel.thumbnailUrl}
+                  alt={config.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              )}
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/60">
+                <p className="text-white/70 text-sm text-center px-4">
+                  {videoError ? 'Video expired — open on Instagram to watch.' : 'No video available.'}
+                </p>
+                <Link
+                  href={reel.permalink ?? config.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-primary text-xs border border-primary/40 px-4 py-2 rounded-full hover:bg-primary/10 transition-colors pointer-events-auto"
+                >
+                  Open on Instagram <ExternalLink className="w-3 h-3" />
+                </Link>
+              </div>
+            </>
+          )}
+
+          {/* Bottom gradient + title */}
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-4 pointer-events-none">
+            <p className="text-white text-sm font-semibold">{config.title}</p>
+          </div>
+        </div>
+
+        {/* Open on Instagram link */}
+        <Link
+          href={reel.permalink ?? config.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 text-white/50 hover:text-white text-xs transition-colors pointer-events-auto"
+        >
+          Open on Instagram <ExternalLink className="w-3 h-3" />
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+// ─── Reel Card ────────────────────────────────────────────────────────────────
+function ReelCard({
+  config,
+  reelData,
+  onPlay,
+}: {
+  config: (typeof REEL_CONFIGS)[0]
+  reelData: ReelData | undefined
+  onPlay: () => void
+}) {
+  const hasThumbnail = !!reelData?.thumbnailUrl
+  const canPlay = !!reelData?.mediaUrl
+
+  return (
+    <button
+      className="group block w-full text-left pointer-events-auto focus:outline-none"
+      onClick={onPlay}
+      aria-label={`Play ${config.title}`}
+    >
+      {/* Outer glow wrapper */}
+      <div
+        className="rounded-[20px] p-px transition-all duration-500"
+        style={{
+          background: `linear-gradient(180deg, ${config.glow}30 0%, transparent 60%)`,
+        }}
+      >
+        {/* 9:16 card */}
+        <div
+          className="relative w-full overflow-hidden rounded-[18px]"
+          style={{ aspectRatio: '9 / 16' }}
+        >
+          {/* Background: real thumbnail or cosmic gradient */}
+          {hasThumbnail ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={reelData!.thumbnailUrl!}
+              alt={config.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+            />
+          ) : (
+            <div
+              className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              style={{ background: config.gradient }}
+            />
+          )}
+
+          {/* Nebula glow (always present, stronger without thumbnail) */}
+          <div
+            className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-700 pointer-events-none ${hasThumbnail ? 'opacity-0 group-hover:opacity-20' : 'opacity-25 group-hover:opacity-45'}`}
+            style={{
+              width: '75%',
+              paddingBottom: '75%',
+              background: `radial-gradient(circle, ${config.glow} 0%, transparent 70%)`,
+              filter: 'blur(28px)',
+            }}
+          />
+
+          {/* Star particles (only when no real thumbnail) */}
+          {!hasThumbnail && Array.from({ length: 44 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full pointer-events-none"
+              style={{
+                width: i % 9 === 0 ? 2.5 : i % 4 === 0 ? 2 : 1,
+                height: i % 9 === 0 ? 2.5 : i % 4 === 0 ? 2 : 1,
+                background: config.particles,
+                top: `${(i * 97 + 7) % 100}%`,
+                left: `${(i * 73 + 13) % 100}%`,
+                opacity: 0.15 + (i % 6) * 0.1,
+              }}
+            />
+          ))}
+
+          {/* Bottom vignette */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none" />
+
+          {/* Center play button */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative">
+              {/* Ripple rings */}
+              <div
+                className="absolute inset-0 rounded-full scale-100 opacity-0 group-hover:scale-[2.4] group-hover:opacity-0 transition-all duration-700 pointer-events-none"
+                style={{ border: `1.5px solid ${config.glow}` }}
+              />
+              <div
+                className="absolute inset-0 rounded-full scale-100 opacity-0 group-hover:scale-[1.7] group-hover:opacity-0 transition-all duration-500 delay-100 pointer-events-none"
+                style={{ border: `1.5px solid ${config.glow}` }}
+              />
+              {/* Circle */}
+              <div
+                className="relative flex items-center justify-center w-[60px] h-[60px] rounded-full backdrop-blur-md border transition-all duration-300 group-hover:scale-110"
+                style={{
+                  background: `${config.glow}28`,
+                  borderColor: `${config.glow}60`,
+                  boxShadow: `0 0 24px ${config.glow}40`,
+                }}
+              >
+                <Play
+                  className="w-[26px] h-[26px] translate-x-[2px]"
+                  style={{ color: config.particles, fill: config.particles }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Top REEL badge */}
+          <div className="absolute top-3 left-3 pointer-events-none">
+            <span
+              className="text-[9px] font-label-caps tracking-widest px-2 py-1 rounded-full backdrop-blur-md"
+              style={{
+                background: `${config.glow}30`,
+                color: config.particles,
+                border: `1px solid ${config.glow}40`,
+              }}
+            >
+              {canPlay ? 'REEL ▶' : 'REEL'}
+            </span>
+          </div>
+
+          {/* Bottom info */}
+          <div className="absolute bottom-0 left-0 right-0 px-4 pb-5 pt-10 pointer-events-none">
+            <div className="flex items-end justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-white font-semibold text-sm leading-tight mb-1">
+                  {config.title}
+                </p>
+                <p className="text-white/50 text-[11px] leading-snug line-clamp-2">
+                  {reelData?.caption || config.description}
+                </p>
+              </div>
+              <ExternalLink
+                className="shrink-0 w-3.5 h-3.5 text-white/30 group-hover:text-white/70 transition-colors duration-300"
+              />
+            </div>
+          </div>
+
+          {/* Inset border glow on hover */}
+          <div
+            className="absolute inset-0 rounded-[18px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            style={{ boxShadow: `inset 0 0 0 1px ${config.glow}50` }}
+          />
+        </div>
+      </div>
+    </button>
+  )
+}
+
+// ─── Section ──────────────────────────────────────────────────────────────────
 export default function GalacticShotsSection() {
+  const [reelDataMap, setReelDataMap] = useState<Record<string, ReelData>>({})
+  const [loading, setLoading] = useState(true)
+  const [activeReel, setActiveReel] = useState<{ reel: ReelData; config: (typeof REEL_CONFIGS)[0] } | null>(null)
+
+  // Fetch real reel data from our secure server-side API route
+  useEffect(() => {
+    fetch('/api/instagram/reels')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.reels) {
+          const map: Record<string, ReelData> = {}
+          data.reels.forEach((r: ReelData) => { map[r.shortcode] = r })
+          setReelDataMap(map)
+        }
+      })
+      .catch((err) => console.warn('[Galactic Shots] Could not load reel data:', err))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const handlePlay = useCallback((config: (typeof REEL_CONFIGS)[0]) => {
+    const reelData = reelDataMap[config.shortcode] ?? { shortcode: config.shortcode, found: false }
+    setActiveReel({ reel: reelData, config })
+  }, [reelDataMap])
+
   return (
     <section
       id="galactic-shots"
@@ -58,59 +384,54 @@ export default function GalacticShotsSection() {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:underline"
+            className="text-primary hover:underline pointer-events-auto"
           >
             @galactic.shots
           </Link>
           .
         </p>
+        {/* Loading indicator */}
+        {loading && (
+          <div className="flex items-center justify-center gap-2 mt-4 text-secondary-fixed-dim text-xs">
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            Loading live thumbnails…
+          </div>
+        )}
       </div>
 
-      {/* Reel card grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {REEL_CARDS.map((card) => (
-          <Link
-            key={card.id}
-            href={card.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass-card rounded-xl overflow-hidden group flex flex-col h-full border-0"
-          >
-            {/* 9:16 reel thumbnail */}
-            <div className="aspect-[9/16] bg-void-black/40 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-navy to-transparent opacity-60 z-10" />
-
-              {/* Play button overlay */}
-              <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/20">
-                  <Play className="text-white w-10 h-10 translate-x-0.5" />
-                </div>
-              </div>
-
-              {/* Thumbnail image */}
-              <Image
-                src={card.src}
-                alt={card.alt}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-cover opacity-60 group-hover:scale-110 transition-transform duration-700"
-              />
-            </div>
-
-            {/* Card footer */}
-            <div className="p-6 flex flex-col flex-grow bg-deep-navy/30">
-              <h3 className="font-headline-md text-starlight-white mb-2 text-lg">{card.title}</h3>
-              <p className="text-secondary-fixed-dim text-sm mb-4 line-clamp-2">
-                {card.description}
-              </p>
-              <div className="mt-auto flex items-center text-primary font-label-caps text-xs gap-2">
-                WATCH REEL
-                <ExternalLink className="w-4 h-4" />
-              </div>
-            </div>
-          </Link>
+      {/* 4-column reel grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {REEL_CONFIGS.map((config) => (
+          <ReelCard
+            key={config.shortcode}
+            config={config}
+            reelData={reelDataMap[config.shortcode]}
+            onPlay={() => handlePlay(config)}
+          />
         ))}
       </div>
+
+      {/* CTA */}
+      <div className="mt-12 text-center">
+        <Link
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-primary border border-primary/30 px-6 py-2.5 rounded-full font-label-caps text-label-caps hover:bg-primary/10 transition-all pointer-events-auto"
+        >
+          VIEW ALL ON @GALACTIC.SHOTS
+          <ExternalLink className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+
+      {/* Inline video modal */}
+      {activeReel && (
+        <VideoModal
+          reel={activeReel.reel}
+          config={activeReel.config}
+          onClose={() => setActiveReel(null)}
+        />
+      )}
     </section>
   )
 }
