@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { Menu, X } from 'lucide-react'
 import { usePortfolioStore } from '@/store/usePortfolioStore'
 
@@ -20,17 +20,69 @@ export default function Navbar() {
   const { activeSection, isMobileMenuOpen, setActiveSection, toggleMobileMenu, closeMobileMenu } =
     usePortfolioStore()
 
-  // IntersectionObserver to track which section is in view
+  /**
+   * isScrollingRef — set to true when a nav link is clicked.
+   * While true, the IntersectionObserver is silenced so sections
+   * the viewport passes through mid-scroll can't steal the active state.
+   * Auto-releases after 1100 ms (well past the ~600-800 ms smooth-scroll).
+   */
+  const isScrollingRef = useRef(false)
+  const scrollLockTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const lockScroll = useCallback(() => {
+    isScrollingRef.current = true
+    if (scrollLockTimer.current) clearTimeout(scrollLockTimer.current)
+    scrollLockTimer.current = setTimeout(() => {
+      isScrollingRef.current = false
+    }, 1100)
+  }, [])
+
+  // IntersectionObserver to track which section is in view and sync URL hash
   useEffect(() => {
+    // Map to track intersecting entries so we can pick the most visible
+    const intersectingMap = new Map<string, number>()
+
     const observer = new IntersectionObserver(
       (entries) => {
+        // Ignore observer events while a programmatic scroll is in progress
+        if (isScrollingRef.current) return
+
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
+            intersectingMap.set(entry.target.id, entry.intersectionRatio)
+          } else {
+            intersectingMap.delete(entry.target.id)
           }
         })
+
+        if (intersectingMap.size === 0) return
+
+        // Pick the section with the highest visible ratio
+        let bestId = ''
+        let bestRatio = 0
+        intersectingMap.forEach((ratio, id) => {
+          if (ratio > bestRatio) {
+            bestRatio = ratio
+            bestId = id
+          }
+        })
+
+        if (bestId) {
+          // Only update if the nav has a link for this section
+          const isNavSection = NAV_LINKS.some((l) => l.sectionId === bestId)
+          if (isNavSection) {
+            setActiveSection(bestId)
+            // Update URL hash without scrolling or adding a history entry
+            if (window.location.hash !== `#${bestId}`) {
+              history.replaceState(null, '', `#${bestId}`)
+            }
+          }
+        }
       },
-      { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' }
+      {
+        threshold: [0.1, 0.3, 0.5, 0.7],
+        rootMargin: '-80px 0px -40% 0px',
+      }
     )
 
     SECTION_IDS.forEach((id) => {
@@ -47,18 +99,27 @@ export default function Navbar() {
       const targetId = href.replace('#', '')
       const el = document.getElementById(targetId)
       if (el) {
+        // Lock observer BEFORE scrolling so mid-scroll sections are ignored
+        lockScroll()
+        setActiveSection(targetId)
+        history.pushState(null, '', href)
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
       closeMobileMenu()
     },
-    [closeMobileMenu]
+    [closeMobileMenu, setActiveSection, lockScroll]
   )
 
   const handleConnectClick = useCallback((): void => {
     const el = document.getElementById('contact')
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if (el) {
+      lockScroll()
+      setActiveSection('contact')
+      history.pushState(null, '', '#contact')
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
     closeMobileMenu()
-  }, [closeMobileMenu])
+  }, [closeMobileMenu, setActiveSection, lockScroll])
 
   return (
     <header className="sticky top-0 z-50 bg-deep-navy/40 backdrop-blur-md border-b border-nebula-purple/20 shadow-[0_0_15px_rgba(76,29,149,0.1)] transition-all duration-300 ease-in-out">

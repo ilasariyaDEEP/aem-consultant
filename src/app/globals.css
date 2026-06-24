@@ -17,10 +17,25 @@
   --color-deep-navy: #0B0D17;
   --color-starlight-white: #F9FAFB;
   --color-cosmic-teal: #5B8B99;
+
+  /* ── Fluid Typography Scale (clamp: min @ 375px → max @ 1280px) ── */
+  /* Formula: clamp(min, preferred-vw, max) scales linearly between breakpoints */
+  --fs-display:    clamp(1.75rem, 5vw + 0.5rem, 3.25rem);  /* 28px → 52px */
+  --fs-headline-lg: clamp(1.25rem, 2vw + 0.75rem, 1.75rem); /* 20px → 28px */
+  --fs-headline-md: clamp(1.1rem,  1.5vw + 0.6rem, 1.375rem);/* 17px → 22px */
+  --fs-body-lg:    clamp(0.9rem,  0.5vw + 0.75rem, 1.0625rem);/* 14px → 17px */
+  --fs-body-md:    clamp(0.8125rem, 0.4vw + 0.7rem, 0.9375rem);/* 13px → 15px */
+  --fs-label:      clamp(0.625rem, 0.3vw + 0.55rem, 0.6875rem);/* 10px → 11px */
+
+  /* ── Fluid Spacing Scale ── */
+  --space-gutter:  clamp(1rem, 3vw, 1.5rem);   /* 16px → 24px */
+  --space-section: clamp(3rem, 8vw, 6rem);      /* 48px → 96px */
 }
 
 html {
   scroll-behavior: smooth;
+  /* 5rem = 80px at default font size, but respects user font-size preferences */
+  scroll-padding-top: 5rem;
 }
 
 body {

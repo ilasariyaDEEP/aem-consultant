@@ -39,9 +39,10 @@ export const metadata: Metadata = {
       'Enterprise AEM Consultant delivering content operations, workflow automation, and multilingual CMS rollouts for global brands. Adobe Certified Expert. Available for collaborations.',
     type: 'website',
     locale: 'en_US',
+    url: 'https://www.deepilasariya.com/',
     images: [
       {
-        url: 'https://ilasariyadeep.github.io/deep-portfolio/og-image.png',
+        url: 'https://www.deepilasariya.com/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Deep Ilasariya | AEM Solutions Consultant Mumbai',
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
     title: 'Deep Ilasariya | AEM Solutions Consultant',
     description:
       'Adobe Certified AEM Expert. 3+ years delivering enterprise CMS operations for HDFC Bank, Tata AIA, Medtronic and more. Available for collaborations.',
-    images: ['https://ilasariyadeep.github.io/deep-portfolio/og-image.png'],
+    images: ['https://www.deepilasariya.com/og-image.png'],
   },
   robots: {
     index: true,
@@ -79,7 +80,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="geo.region" content="IN-MH" />
         <meta name="geo.placename" content="Mumbai, Maharashtra, India" />
-        <link rel="canonical" href="https://ilasariyadeep.github.io/deep-portfolio/" />
+        <link rel="canonical" href="https://www.deepilasariya.com/" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -89,7 +90,7 @@ export default function RootLayout({
               "name": "Deep Ilasariya",
               "jobTitle": "AEM Solutions Consultant",
               "description": "Adobe Certified AEM Sites Business Practitioner with 3+ years delivering enterprise CMS solutions for global brands. Specialized in AEM Cloud, Edge Delivery Services, multilingual content operations, and workflow automation.",
-              "url": "https://ilasariyadeep.github.io/deep-portfolio/",
+              "url": "https://www.deepilasariya.com/",
               "email": "ilasariyadeep13@gmail.com",
               "address": {
                 "@type": "PostalAddress",
@@ -125,6 +126,55 @@ export default function RootLayout({
               "sameAs": [
                 "https://www.linkedin.com/in/ilasariyadeep13/",
                 "https://www.instagram.com/galactic.shots/"
+              ]
+            })
+          }}
+        />
+        {/* ProfessionalService schema — enables Local SEO, geo signals, and rich results */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              "name": "Deep Ilasariya - AEM Solutions Consultant",
+              "image": "https://www.deepilasariya.com/images/deep-ilasariya.webp",
+              "url": "https://www.deepilasariya.com/",
+              "priceRange": "$$$",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Mumbai",
+                "addressRegion": "Maharashtra",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "19.1828",
+                "longitude": "72.8592"
+              },
+              "openingHoursSpecification": {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday"
+                ],
+                "opens": "09:00",
+                "closes": "18:00"
+              },
+              "sameAs": [
+                "https://github.com/ilasariyadeep"
+              ],
+              "jobTitle": "AEM Solutions Consultant",
+              "knowsAbout": [
+                "Adobe Experience Manager",
+                "AEM Sites",
+                "Edge Delivery Services",
+                "Content Operations",
+                "Workflow Automation",
+                "Multilingual Rollouts"
               ]
             })
           }}

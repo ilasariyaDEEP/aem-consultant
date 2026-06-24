@@ -374,7 +374,7 @@ export default function ExperienceSection() {
       </div>
 
       {/* ─── Strategic Engagements ─── */}
-      <div id="projects" className="scroll-mt-24">
+      <section id="projects" className="scroll-mt-24">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12">
           <div>
             <h2 className="font-headline-lg text-headline-lg text-starlight-white">
@@ -456,7 +456,7 @@ export default function ExperienceSection() {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* ─── Technical Capabilities ─── */}
       <div className="glass-card p-12 rounded-3xl overflow-hidden relative">

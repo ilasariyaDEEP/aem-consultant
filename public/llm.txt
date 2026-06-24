@@ -1,0 +1,16 @@
+# Deep Ilasariya - AEM Solutions Consultant
+
+## Professional Profile
+- **Title:** Adobe Certified Expert • AEM Solutions Consultant
+- **Core Focus:** Enterprise CMS Excellence, Content Operations, Workflow Automation, Multilingual Site Management (Zero-code scale architectures).
+- **Location Base:** Mumbai, India (Available for Global Enterprise Remote Contracts).
+- **Website:** https://www.deepilasariya.com/
+
+## Key Technical Skillset
+- **CMS Platform:** AEM Sites (On-Prem, AEMaaCS), Edge Delivery Services (EDS), Content/Experience Fragments, Dynamic Media, ACS Commons Automation.
+- **Operations & Scale:** Managed 40+ member authoring teams, 20+ simultaneous language rollouts (Live Copy/Blueprint configurations).
+- **Environments & Pipelines:** Deployment pipelines (DEV -> UAT -> Stage -> Production), Dispatcher & CDN orchestration.
+
+## Career Milestones
+- **Time-to-Publish Reduction:** Reduced content fragments publishing overhead from 60 minutes down to 20 minutes via ACS Commons batching.
+- **Enterprise Scale:** Handled simultaneous operations across banking, insurance, healthcare, and luxury hospitality sectors (HDFC Bank, Tata AIA, Medtronic, QuidelOrtho).

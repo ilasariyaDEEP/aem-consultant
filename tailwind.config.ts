@@ -81,14 +81,17 @@ const config: Config = {
         'label-md': ['"JetBrains Mono"', 'monospace'],
       },
       fontSize: {
-        'display-lg': ['52px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
-        'display-lg-mobile': ['28px', { lineHeight: '1.2', fontWeight: '700' }],
-        'headline-lg': ['28px', { lineHeight: '1.3', fontWeight: '600' }],
-        'headline-md': ['22px', { lineHeight: '1.4', fontWeight: '500' }],
-        'body-lg': ['17px', { lineHeight: '1.6', fontWeight: '400' }],
-        'body-md': ['15px', { lineHeight: '1.5', fontWeight: '400' }],
-        'label-caps': ['11px', { lineHeight: '1.2', letterSpacing: '0.1em', fontWeight: '500' }],
-        'label-md': ['13px', { lineHeight: '1.4', fontWeight: '400' }],
+        // Fluid typography — scales continuously from 375px → 1280px viewport
+        // clamp(mobile-min, fluid-midpoint, desktop-max)
+        'display-lg':        ['clamp(1.75rem, 5vw + 0.5rem, 3.25rem)',      { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+        'display-lg-mobile': ['clamp(1.5rem,  4vw + 0.4rem, 1.75rem)',      { lineHeight: '1.2', fontWeight: '700' }],
+        'headline-lg':       ['clamp(1.25rem, 2vw + 0.75rem, 1.75rem)',     { lineHeight: '1.3', fontWeight: '600' }],
+        'headline-md':       ['clamp(1.0rem,  1.5vw + 0.6rem, 1.375rem)',   { lineHeight: '1.4', fontWeight: '500' }],
+        'headline-sm':       ['clamp(0.9rem,  1vw + 0.55rem, 1.125rem)',    { lineHeight: '1.4', fontWeight: '500' }],
+        'body-lg':           ['clamp(0.9rem,  0.5vw + 0.75rem, 1.0625rem)', { lineHeight: '1.6', fontWeight: '400' }],
+        'body-md':           ['clamp(0.8125rem,0.4vw + 0.7rem, 0.9375rem)', { lineHeight: '1.5', fontWeight: '400' }],
+        'label-caps':        ['clamp(0.625rem, 0.3vw + 0.55rem, 0.6875rem)',{ lineHeight: '1.2', letterSpacing: '0.1em', fontWeight: '500' }],
+        'label-md':          ['clamp(0.75rem,  0.3vw + 0.65rem, 0.8125rem)',{ lineHeight: '1.4', fontWeight: '400' }],
       },
       borderRadius: {
         sm: '0.25rem',
