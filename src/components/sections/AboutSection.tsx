@@ -24,7 +24,7 @@ export default function AboutSection() {
             <div className="profile-aura" aria-hidden="true" />
 
             {/* Profile Image container */}
-            <div className="profile-image-container relative w-[260px] h-[260px] sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-2xl overflow-hidden border border-white/10 group-hover:scale-105 transition-all duration-500 ease-out z-10">
+            <div className="profile-image-container relative w-[260px] h-[260px] sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-2xl overflow-hidden border border-nebula-purple/30 group-hover:scale-105 transition-all duration-500 ease-out z-10">
               <Image
                 src={PROFILE_IMAGE_URL}
                 alt="Deep Ilasariya - AEM Expert & Astronomer"
