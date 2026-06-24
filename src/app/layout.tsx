@@ -78,6 +78,11 @@ export default function RootLayout({
         {/* Preconnect to Google Fonts for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Load Google Fonts via <link> — NOT @import in CSS, which Next.js PostCSS breaks */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
         <meta name="geo.region" content="IN-MH" />
         <meta name="geo.placename" content="Mumbai, Maharashtra, India" />
         <link rel="canonical" href="https://www.deepilasariya.com/" />

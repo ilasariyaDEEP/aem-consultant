@@ -265,6 +265,7 @@ export default function ContactSection() {
                     name="name"
                     type="text"
                     required
+                    autoComplete="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Full Name or Alias"
@@ -285,6 +286,7 @@ export default function ContactSection() {
                     name="email"
                     type="email"
                     required
+                    autoComplete="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="your@frequency.com"
@@ -357,6 +359,7 @@ export default function ContactSection() {
                     name="message"
                     rows={5}
                     required
+                    autoComplete="off"
                     value={formData.message}
                     onChange={handleInputChange}
                     placeholder="Tell me about your project or requirement..."

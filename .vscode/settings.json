@@ -1,0 +1,17 @@
+{
+  // Disable VS Code's built-in CSS linter — it doesn't understand Tailwind @-rules
+  // (@tailwind base / components / utilities). These are NOT real errors.
+  // PostCSS + Tailwind handle them at build time correctly.
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+
+  // Let Tailwind IntelliSense handle CSS validation instead
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.includeLanguages": {
+    "typescriptreact": "html",
+    "javascriptreact": "html"
+  }
+}
