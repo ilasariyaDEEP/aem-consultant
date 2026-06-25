@@ -255,7 +255,7 @@ export default function AstronomySection() {
             >
               <div>
                 <cert.IconComponent className={`w-8 h-8 mb-4 block ${cert.iconColor}`} />
-                <h4 className="font-label-caps text-label-caps text-primary mb-2">{cert.label}</h4>
+                <p className="font-label-caps text-label-caps text-primary mb-2">{cert.label}</p>
                 <h3 className="font-headline-md text-headline-md text-starlight-white mb-2">{cert.value}</h3>
                 <p className="font-body-md text-secondary leading-relaxed">{cert.subtitle}</p>
               </div>
@@ -310,9 +310,9 @@ export default function AstronomySection() {
 
               {/* Text Block below the image */}
               <div className="p-5 space-y-3 bg-slate-950/40 backdrop-blur-md border-t border-white/5 flex-grow">
-                <h4 className="font-headline-sm text-starlight-white text-base font-bold tracking-wide group-hover:text-primary transition-colors">
+                <h3 className="font-headline-sm text-starlight-white text-base font-bold tracking-wide group-hover:text-primary transition-colors">
                   {item.caption}
-                </h4>
+                </h3>
 
                 <div className="space-y-2 text-xs text-secondary-fixed-dim">
                   <div className="flex items-center gap-2">

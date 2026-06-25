@@ -42,12 +42,12 @@ const config: Config = {
         'on-primary-fixed-variant': '#572ba0',
         'surface-tint': '#d3bbff',
         // Secondary
-        secondary: '#c5c5d4',
+        secondary: '#e2e2ec',
         'on-secondary': '#2e303b',
         'secondary-container': '#444652',
         'on-secondary-container': '#b4b4c2',
         'secondary-fixed': '#e1e1f0',
-        'secondary-fixed-dim': '#c5c5d4',
+        'secondary-fixed-dim': '#e2e2ec',
         'on-secondary-fixed': '#191b26',
         'on-secondary-fixed-variant': '#444652',
         // Tertiary

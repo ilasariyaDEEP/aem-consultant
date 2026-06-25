@@ -14,7 +14,7 @@ const NAV_LINKS: Array<{ label: string; href: string; sectionId: string }> = [
   { label: 'Contact', href: '#contact', sectionId: 'contact' },
 ]
 
-const SECTION_IDS = ['home', 'about', 'experience', 'projects', 'skills', 'astronomy', 'contact']
+const SECTION_IDS = ['home', 'about', 'experience', 'projects', 'contact']
 
 export default function Navbar() {
   const { activeSection, isMobileMenuOpen, setActiveSection, toggleMobileMenu, closeMobileMenu } =
@@ -39,8 +39,8 @@ export default function Navbar() {
 
   // IntersectionObserver to track which section is in view and sync URL hash
   useEffect(() => {
-    // Map to track intersecting entries so we can pick the most visible
-    const intersectingMap = new Map<string, number>()
+    // Map to track intersecting entries so we can find the one closest to the top
+    const intersectingMap = new Map<string, IntersectionObserverEntry>()
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -49,7 +49,7 @@ export default function Navbar() {
 
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            intersectingMap.set(entry.target.id, entry.intersectionRatio)
+            intersectingMap.set(entry.target.id, entry)
           } else {
             intersectingMap.delete(entry.target.id)
           }
@@ -57,31 +57,28 @@ export default function Navbar() {
 
         if (intersectingMap.size === 0) return
 
-        // Pick the section with the highest visible ratio
+        // Pick the intersecting section closest to the top of the viewport
         let bestId = ''
-        let bestRatio = 0
-        intersectingMap.forEach((ratio, id) => {
-          if (ratio > bestRatio) {
-            bestRatio = ratio
+        let minDistance = Infinity
+        intersectingMap.forEach((entry, id) => {
+          const distance = Math.abs(entry.boundingClientRect.top)
+          if (distance < minDistance) {
+            minDistance = distance
             bestId = id
           }
         })
 
         if (bestId) {
-          // Only update if the nav has a link for this section
-          const isNavSection = NAV_LINKS.some((l) => l.sectionId === bestId)
-          if (isNavSection) {
-            setActiveSection(bestId)
-            // Update URL hash without scrolling or adding a history entry
-            if (window.location.hash !== `#${bestId}`) {
-              history.replaceState(null, '', `#${bestId}`)
-            }
+          setActiveSection(bestId)
+          // Update URL hash without scrolling or adding a history entry
+          if (window.location.hash !== `#${bestId}`) {
+            history.replaceState(null, '', `#${bestId}`)
           }
         }
       },
       {
-        threshold: [0.1, 0.3, 0.5, 0.7],
-        rootMargin: '-80px 0px -40% 0px',
+        threshold: 0,
+        rootMargin: '-20% 0px -50% 0px',
       }
     )
 

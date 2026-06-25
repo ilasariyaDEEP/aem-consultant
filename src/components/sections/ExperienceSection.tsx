@@ -405,9 +405,9 @@ export default function ExperienceSection() {
                   </div>
                   <div>
                     <div className="flex items-center gap-4 mb-4">
-                      <h4 className="font-headline-md text-headline-md text-starlight-white">
+                      <h3 className="font-headline-md text-headline-md text-starlight-white">
                         {eng.client}
-                      </h4>
+                      </h3>
                       <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-label-caps rounded-full">
                         {eng.tags[0]}
                       </span>
@@ -435,9 +435,9 @@ export default function ExperienceSection() {
                       {eng.client.toUpperCase()}
                     </div>
                   </div>
-                  <h4 className="font-headline-md text-headline-md text-starlight-white mb-3">
+                  <h3 className="font-headline-md text-headline-md text-starlight-white mb-3">
                     {eng.headline}
-                  </h4>
+                  </h3>
                   <p className="font-label-md text-secondary line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
                     {eng.body}
                   </p>

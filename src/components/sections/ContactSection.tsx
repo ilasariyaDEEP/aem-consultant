@@ -171,9 +171,9 @@ export default function ContactSection() {
                 </span>
               </div>
 
-              <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-starlight-white leading-none text-glow">
+              <h2 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-starlight-white leading-none text-glow">
                 Get in Touch
-              </h1>
+              </h2>
 
               <p className="font-body-lg text-body-lg text-secondary-fixed-dim max-w-md">
                 Always happy to connect. Feel free to reach out and I will get back to you.
@@ -250,9 +250,9 @@ export default function ContactSection() {
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <Terminal className="text-primary w-6 h-6" />
                   </div>
-                  <h2 className="font-headline-md text-headline-md text-starlight-white">
+                  <h3 className="font-headline-md text-headline-md text-starlight-white">
                     Signal Composition
-                  </h2>
+                  </h3>
                 </div>
                 <p className="text-sm text-secondary border-l-2 border-primary/50 pl-4 py-1">
                   Always happy to connect with teams working on interesting AEM challenges. Feel free to reach out.
