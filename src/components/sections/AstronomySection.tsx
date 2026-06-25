@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Sparkles, Rocket, ExternalLink, GraduationCap, Medal, BadgeCheck, Award, Users, MapPin, Camera } from 'lucide-react'
-import type { GalleryItem, CertCard } from '@/types'
+import { Sparkles, Rocket, ExternalLink, GraduationCap, Medal, BadgeCheck, Award, Users, MapPin, Camera, Telescope, Calendar } from 'lucide-react'
+import type { GalleryItem } from '@/types'
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
@@ -31,6 +31,12 @@ const GALLERY_ITEMS: GalleryItem[] = [
     meta: 'Sony Alpha | 14mm | f/2.8 | 25s | ISO 3200',
     aspectClass: 'aspect-[3/4]',
   },
+]
+
+const COLLAGE_STYLES = [
+  'md:translate-y-8 md:rotate-[1deg] md:hover:rotate-0 md:hover:translate-y-4',
+  'md:-translate-y-8 md:-rotate-[1deg] md:hover:rotate-0 md:hover:-translate-y-4',
+  'md:translate-y-4 md:rotate-[1.5deg] md:hover:rotate-0 md:hover:translate-y-0',
 ]
 
 const CERTS: Array<{
@@ -148,6 +154,7 @@ export default function AstronomySection() {
               src="/images/gazing-into-the-cosmic-void.webp"
               alt="Gazing into the Cosmic Void"
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               priority
             />
@@ -200,28 +207,37 @@ export default function AstronomySection() {
                 ARC Educators is an ISRO-certified astronomy outreach organisation dedicated to making space science accessible to everyone. Since July 2023, I have been volunteering as a telescope operator and sky guide at astrocamps across Mumbai. I set up equipment, help visitors locate and identify celestial objects, and explain the science behind what they see in real time.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10 flex flex-col h-full">
-                <h4 className="font-label-caps text-label-caps text-primary mb-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-0 pt-6 mt-4 border-t border-outline-variant/10">
+              <div className="flex flex-col items-center sm:items-start text-center sm:text-left sm:pr-6 sm:border-r border-outline-variant/10">
+                <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-3 text-primary shadow-[0_0_12px_rgba(211,187,255,0.15)]">
+                  <Telescope className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+                <h4 className="font-label-caps text-label-caps text-primary mb-2 text-xs tracking-wider">
                   Telescope Operations
                 </h4>
-                <p className="text-sm text-secondary flex-grow">
+                <p className="text-sm text-secondary leading-relaxed">
                   Setting up and operating telescopes at astrocamps, calibrating equipment, and guiding visitors through live views of planets, star clusters, nebulae, and deep sky objects.
                 </p>
               </div>
-              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10 flex flex-col h-full">
-                <h4 className="font-label-caps text-label-caps text-primary mb-2">
+              <div className="flex flex-col items-center sm:items-start text-center sm:text-left sm:px-6 sm:border-r border-outline-variant/10">
+                <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-3 text-primary shadow-[0_0_12px_rgba(211,187,255,0.15)]">
+                  <GraduationCap className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+                <h4 className="font-label-caps text-label-caps text-primary mb-2 text-xs tracking-wider">
                   Sky Education
                 </h4>
-                <p className="text-sm text-secondary flex-grow">
+                <p className="text-sm text-secondary leading-relaxed">
                   Answering visitor questions and explaining astronomical concepts during live telescope viewings. Sharing insights on planets, constellations, and the scale of the universe in real time.
                 </p>
               </div>
-              <div className="p-4 bg-void-black/40 rounded-xl border border-outline-variant/10 flex flex-col h-full">
-                <h4 className="font-label-caps text-label-caps text-primary mb-2">
+              <div className="flex flex-col items-center sm:items-start text-center sm:text-left sm:pl-6">
+                <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-3 text-primary shadow-[0_0_12px_rgba(211,187,255,0.15)]">
+                  <Calendar className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+                <h4 className="font-label-caps text-label-caps text-primary mb-2 text-xs tracking-wider">
                   Outreach Since
                 </h4>
-                <p className="text-sm text-secondary flex-grow">
+                <p className="text-sm text-secondary leading-relaxed">
                   July 2023 to Present. 2 plus years contributing to ARC Educators mission of science literacy and astronomy awareness across India.
                 </p>
               </div>
@@ -242,34 +258,44 @@ export default function AstronomySection() {
       </div>
 
       {/* ─── Leadership & Accolades ─── */}
-      <div className="space-y-12">
+      <div className="space-y-8">
         <h2 className="font-headline-lg text-headline-lg text-starlight-white text-center">
           Leadership &amp; Accolades
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full sm:auto-rows-fr">
           {CERTS.map((cert) => (
             <div
               key={cert.id}
-              className={`glass-card p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 flex flex-col justify-between ${cert.span === 2 ? 'md:col-span-2' : ''
-                }`}
+              className="glass-card p-6 rounded-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full hover:border-primary/30"
             >
-              <div>
-                <cert.IconComponent className={`w-8 h-8 mb-4 block ${cert.iconColor}`} />
-                <p className="font-label-caps text-label-caps text-primary mb-2">{cert.label}</p>
-                <h3 className="font-headline-md text-headline-md text-starlight-white mb-2">{cert.value}</h3>
-                <p className="font-body-md text-secondary leading-relaxed">{cert.subtitle}</p>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-label-caps text-label-caps text-primary text-[9px] tracking-wider uppercase">
+                    {cert.label}
+                  </span>
+                  <cert.IconComponent className={`w-5 h-5 ${cert.iconColor}`} />
+                </div>
+                <div>
+                  <h3 className="font-headline-sm text-starlight-white text-sm font-bold tracking-wide mb-1 leading-snug">
+                    {cert.value}
+                  </h3>
+                  <p className="text-secondary text-[11px] leading-relaxed">
+                    {cert.subtitle}
+                  </p>
+                </div>
               </div>
+
               {(cert.date || cert.link) && (
-                <div className="mt-4 pt-4 border-t border-white/5 font-label-md text-secondary-fixed-dim text-xs flex justify-between items-center gap-4">
+                <div className="mt-4 pt-3 border-t border-white/5 font-label-md text-secondary-fixed-dim text-[10px] flex justify-between items-center gap-2">
                   <span>{cert.date || ''}</span>
                   {cert.link && (
                     <a
                       href={cert.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-primary hover:underline flex items-center gap-1 font-label-caps text-[10px] tracking-wider shrink-0"
+                      className="text-primary hover:underline flex items-center gap-1 font-label-caps text-[9px] tracking-wider shrink-0"
                     >
-                      Verify Badge
+                      Verify
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   )}
@@ -291,42 +317,45 @@ export default function AstronomySection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          {GALLERY_ITEMS.map((item) => (
-            <div
-              key={item.id}
-              className="glass-card rounded-2xl overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-500 group flex flex-col shadow-xl"
-            >
-              {/* Image Container with natural aspect ratio */}
-              <div className={`relative w-full ${item.aspectClass} overflow-hidden bg-void-black/20`}>
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-              </div>
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 scrollbar-none md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0 items-start">
+          {GALLERY_ITEMS.map((item, index) => {
+            const collageStyle = COLLAGE_STYLES[index % COLLAGE_STYLES.length]
+            return (
+              <div
+                key={item.id}
+                className={`glass-card rounded-2xl overflow-hidden border border-outline-variant/15 hover:border-primary/30 transition-all duration-500 group flex flex-col shadow-xl snap-center shrink-0 w-[80vw] sm:w-[350px] md:w-auto ${collageStyle}`}
+              >
+                {/* Image Container with natural aspect ratio */}
+                <div className={`relative w-full ${item.aspectClass} overflow-hidden bg-void-black/20`}>
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                </div>
 
-              {/* Text Block below the image */}
-              <div className="p-5 space-y-3 bg-slate-950/40 backdrop-blur-md border-t border-white/5 flex-grow">
-                <h3 className="font-headline-sm text-starlight-white text-base font-bold tracking-wide group-hover:text-primary transition-colors">
-                  {item.caption}
-                </h3>
+                {/* Text Block below the image */}
+                <div className="p-5 space-y-3 bg-deep-navy/40 backdrop-blur-md border-t border-outline-variant/15 flex-grow">
+                  <h3 className="font-headline-sm text-starlight-white text-base font-bold tracking-wide group-hover:text-primary transition-colors">
+                    {item.caption}
+                  </h3>
 
-                <div className="space-y-2 text-xs text-secondary-fixed-dim">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
-                    <span>{item.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Camera className="w-3.5 h-3.5 text-cosmic-teal shrink-0" />
-                    <span className="font-mono">{item.meta}</span>
+                  <div className="space-y-2 text-xs text-secondary-fixed-dim">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
+                      <span>{item.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Camera className="w-3.5 h-3.5 text-cosmic-teal shrink-0" />
+                      <span className="font-mono">{item.meta}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 

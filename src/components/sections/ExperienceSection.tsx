@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { TimelineEntry, EngagementCard } from '@/types'
-import { BadgeCheck, Rocket, Telescope, ShieldCheck, Users, Settings, Handshake, BarChart, Zap, ExternalLink } from 'lucide-react'
+import { BadgeCheck, Rocket, Telescope, ShieldCheck, Users, Settings, Handshake, Zap, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const TIMELINE: TimelineEntry[] = [
   {
@@ -117,6 +117,63 @@ const ENGAGEMENTS: EngagementCard[] = [
 
 export default function ExperienceSection() {
   const timelineItemsRef = useRef<NodeListOf<Element> | null>(null)
+
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [visibleCards, setVisibleCards] = useState(3)
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setVisibleCards(3)
+      } else if (window.innerWidth >= 768) {
+        setVisibleCards(2)
+      } else {
+        setVisibleCards(1)
+      }
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const maxIndex = Math.max(0, ENGAGEMENTS.length - visibleCards)
+
+  useEffect(() => {
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(maxIndex)
+    }
+  }, [visibleCards, maxIndex, currentIndex])
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1))
+  }
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1))
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return
+    const diff = touchStartX.current - touchEndX.current
+    const threshold = 50 // px
+    if (diff > threshold) {
+      nextSlide()
+    } else if (diff < -threshold) {
+      prevSlide()
+    }
+    touchStartX.current = 0
+    touchEndX.current = 0
+  }
 
   // IntersectionObserver for timeline node glow effect
   useEffect(() => {
@@ -374,7 +431,7 @@ export default function ExperienceSection() {
       </div>
 
       {/* ─── Strategic Engagements ─── */}
-      <section id="projects" className="scroll-mt-24">
+      <section id="projects" className="scroll-mt-24 relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-12">
           <div>
             <h2 className="font-headline-lg text-headline-lg text-starlight-white">
@@ -385,168 +442,110 @@ export default function ExperienceSection() {
               experiences across sectors.
             </p>
           </div>
+          {/* Navigation Controls */}
+          <div className="flex items-center justify-end gap-3 w-full md:w-auto self-end md:self-auto">
+            <button
+              onClick={prevSlide}
+              className="w-12 h-12 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/50 text-starlight-white hover:text-primary flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="w-12 h-12 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/50 text-starlight-white hover:text-primary flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ENGAGEMENTS.map((eng) => (
-            <div
-              key={eng.id}
-              className={`group glass-card p-8 rounded-2xl hover:-translate-y-2 transition-all duration-500 ${
-                eng.span === 2 ? 'lg:col-span-2' : ''
-              }`}
-            >
-              {eng.icon ? (
-                // Wide card with icon + metrics
-                <div className="flex flex-col md:flex-row gap-8">
-                  <div className="shrink-0">
-                    <div className="w-16 h-16 rounded-full bg-nebula-purple/20 flex items-center justify-center">
-                      {eng.icon && <eng.icon className="text-primary w-8 h-8" />}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-4 mb-4">
-                      <h3 className="font-headline-md text-headline-md text-starlight-white">
-                        {eng.client}
-                      </h3>
-                      <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-label-caps rounded-full">
-                        {eng.tags[0]}
-                      </span>
-                    </div>
-                    <p className="font-label-md text-secondary mb-6">{eng.body}</p>
-                    {eng.metrics && (
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {eng.metrics.map((m) => (
-                          <div key={m.label} className="p-4 glass-card rounded-xl text-center">
-                            <div className="text-primary font-bold text-xl">{m.value}</div>
-                            <div className="text-[10px] font-label-caps text-secondary-fixed-dim uppercase">
-                              {m.label}
-                            </div>
-                          </div>
-                        ))}
+        {/* Carousel Viewport */}
+        <div 
+          className="overflow-hidden cursor-grab active:cursor-grabbing mx-[-12px] py-4"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{
+              transform: `translateX(-${currentIndex * (100 / visibleCards)}%)`,
+            }}
+          >
+            {ENGAGEMENTS.map((eng) => (
+              <div
+                key={eng.id}
+                className="w-full md:w-1/2 lg:w-1/3 shrink-0 px-3 box-border flex flex-col"
+              >
+                <div
+                  className="group glass-card p-6 rounded-2xl hover:-translate-y-2 transition-all duration-500 flex-1 flex flex-col justify-between"
+                >
+                  <div className="flex flex-col h-full justify-between gap-4">
+                    <div>
+                      {/* Header block */}
+                      <div className="flex items-center gap-4 mb-4 min-h-[40px]">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-starlight-white font-bold text-xl tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">
+                            {eng.client.toUpperCase()}
+                          </span>
+                          {/* Metrics as header tags */}
+                          {eng.metrics && eng.metrics.map((m) => (
+                            <span 
+                              key={m.label} 
+                              className="px-2 py-0.5 bg-primary/10 border border-primary/20 text-primary text-[9px] font-label-caps rounded-full whitespace-nowrap"
+                            >
+                              {m.value} {m.label}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    )}
+
+                      {/* Headline & Body content (Fully visible, no line-clamp) */}
+                      <h3 className="font-headline-md text-headline-md text-starlight-white mb-2">
+                        {eng.headline}
+                      </h3>
+                      <p className="font-label-md text-secondary leading-relaxed">
+                        {eng.body}
+                      </p>
+                    </div>
+
+                    {/* Bottom Tags */}
+                    <div className="pt-4 border-t border-outline-variant/20 flex gap-1.5 flex-wrap">
+                      {eng.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-1 bg-surface-container/40 rounded text-[9px] font-label-caps text-primary uppercase"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              ) : (
-                // Standard card
-                <>
-                  <div className="h-16 flex items-center mb-6">
-                    <div className="text-starlight-white font-bold text-2xl tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">
-                      {eng.client.toUpperCase()}
-                    </div>
-                  </div>
-                  <h3 className="font-headline-md text-headline-md text-starlight-white mb-3">
-                    {eng.headline}
-                  </h3>
-                  <p className="font-label-md text-secondary line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
-                    {eng.body}
-                  </p>
-                  <div className="mt-6 pt-6 border-t border-outline-variant/20 flex gap-2 flex-wrap">
-                    {eng.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-1 bg-surface-container/40 rounded text-[10px] font-label-caps text-primary uppercase"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Pagination Dots */}
+        <div className="flex justify-center items-center gap-2 mt-8">
+          {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                currentIndex === idx
+                  ? 'w-8 bg-primary'
+                  : 'w-2 bg-white/20 hover:bg-white/40'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
           ))}
         </div>
       </section>
 
-      {/* ─── Technical Capabilities ─── */}
-      <div className="glass-card p-12 rounded-3xl overflow-hidden relative">
-        <div className="absolute top-0 right-0 p-8 opacity-10 skills-chart bar-chart" aria-hidden="true">
-          <BarChart className="w-32 h-32 text-primary" />
-        </div>
-        <div className="relative z-10">
-          <h2 className="font-headline-lg text-headline-lg text-starlight-white mb-2">
-            Full AEM Stack - Without Writing Code
-          </h2>
-          <p className="text-secondary mb-8">
-            End-to-end expertise across the Adobe Experience Manager ecosystem, from content architecture to production deployment.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Group 1: AEM Core */}
-            <div className="space-y-4">
-              <h3 className="font-headline-sm text-primary border-b border-primary/20 pb-2">AEM Core</h3>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  'Adobe Experience Manager (AEM Sites)',
-                  'AEM as a Cloud Service',
-                  'Edge Delivery Services (EDS / Franklin)',
-                  'Content Fragment Modeling & Automation',
-                  'Experience Fragment Architecture',
-                  'Dynamic Media',
-                  'ACS Commons Automation',
-                  'Package Deployment (DEV → UAT → Stage → Prod)',
-                  'Dispatcher Configuration & CDN Basics',
-                ].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full font-label-md text-xs text-starlight-white hover:border-primary/50 transition-colors"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Group 2: Content & Strategy */}
-            <div className="space-y-4">
-              <h3 className="font-headline-sm text-primary border-b border-primary/20 pb-2">Content & Strategy</h3>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  'Multilingual Content Management',
-                  'Live Copy & Blueprint Structures',
-                  'Language Copy & i18n',
-                  'SEO Tag Management & Structured Content',
-                  'WCAG Accessibility Standards',
-                  'JSON Authoring',
-                  'AEM Guides (XML Authoring - basics)',
-                  'Headless CMS Concepts',
-                ].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full font-label-md text-xs text-starlight-white hover:border-primary/50 transition-colors"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Group 3: Operations & Tools */}
-            <div className="space-y-4">
-              <h3 className="font-headline-sm text-primary border-b border-primary/20 pb-2">Operations & Tools</h3>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  'Jira - Agile Project Coordination',
-                  'Stakeholder Requirement Gathering',
-                  'Dev Ticket Creation & QA Verification',
-                  'App Scripts & Excel Automation',
-                  'Team Operations (40+ member teams)',
-                  'Leave & Resource Tracking Systems',
-                  'ProofHub Project Management',
-                  'Cross-functional Delivery Coordination',
-                ].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full font-label-md text-xs text-starlight-white hover:border-primary/50 transition-colors"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
   )
 }

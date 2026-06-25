@@ -3,3 +3,6 @@ node_modules/
 .env*.local
 .env
 *-report.json
+temp_diff.js
+git_diff_*.txt
+recovered_*

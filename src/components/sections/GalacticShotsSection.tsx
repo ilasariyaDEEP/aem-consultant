@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { Play, X, ExternalLink, Loader2, Volume2, VolumeX } from 'lucide-react'
+import { Play, X, ExternalLink, Loader2, Volume2, VolumeX, ChevronLeft, ChevronRight } from 'lucide-react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface ReelData {
@@ -108,9 +108,9 @@ function VideoModal({
         <div className="w-full flex justify-end pr-1">
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors backdrop-blur-md pointer-events-auto"
+            className="w-9 h-9 rounded-full bg-deep-navy/40 border border-outline-variant/30 flex items-center justify-center hover:bg-deep-navy/60 transition-colors backdrop-blur-md pointer-events-auto"
           >
-            <X className="w-4 h-4 text-white" />
+            <X className="w-4 h-4 text-starlight-white" />
           </button>
         </div>
 
@@ -139,7 +139,7 @@ function VideoModal({
               {/* Mute toggle */}
               <button
                 onClick={toggleMute}
-                className="absolute bottom-14 right-3 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-black/70 transition-colors pointer-events-auto z-10"
+                className="absolute bottom-14 right-3 w-9 h-9 rounded-full bg-deep-navy/70 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center hover:bg-deep-navy/90 transition-colors pointer-events-auto z-10 text-starlight-white"
               >
                 {muted
                   ? <VolumeX className="w-4 h-4 text-white" />
@@ -198,26 +198,29 @@ function VideoModal({
 function ReelCard({
   config,
   reelData,
-  onPlay,
+  isActive,
 }: {
   config: (typeof REEL_CONFIGS)[0]
   reelData: ReelData | undefined
-  onPlay: () => void
+  isActive: boolean
 }) {
   const hasThumbnail = !!reelData?.thumbnailUrl
   const canPlay = !!reelData?.mediaUrl
 
   return (
-    <button
-      className="group block w-full text-left pointer-events-auto focus:outline-none"
-      onClick={onPlay}
-      aria-label={`Play ${config.title}`}
+    <div
+      className={`group block w-full text-left focus:outline-none transition-all duration-500 ${
+        isActive ? 'cursor-pointer scale-100' : 'cursor-pointer scale-95 opacity-80 hover:opacity-100'
+      }`}
     >
       {/* Outer glow wrapper */}
       <div
         className="rounded-[20px] p-px transition-all duration-500"
         style={{
-          background: `linear-gradient(180deg, ${config.glow}30 0%, transparent 60%)`,
+          background: isActive
+            ? `linear-gradient(180deg, ${config.glow}80 0%, transparent 60%)`
+            : `linear-gradient(180deg, ${config.glow}20 0%, transparent 60%)`,
+          boxShadow: isActive ? `0 10px 40px -10px ${config.glow}40` : 'none',
         }}
       >
         {/* 9:16 card */}
@@ -284,7 +287,9 @@ function ReelCard({
               />
               {/* Circle */}
               <div
-                className="relative flex items-center justify-center w-[60px] h-[60px] rounded-full backdrop-blur-md border transition-all duration-300 group-hover:scale-110"
+                className={`relative flex items-center justify-center w-[60px] h-[60px] rounded-full backdrop-blur-md border transition-all duration-300 ${
+                  isActive ? 'opacity-100 scale-100 group-hover:scale-110' : 'opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-90'
+                }`}
                 style={{
                   background: `${config.glow}28`,
                   borderColor: `${config.glow}60`,
@@ -337,7 +342,7 @@ function ReelCard({
           />
         </div>
       </div>
-    </button>
+    </div>
   )
 }
 
@@ -346,6 +351,18 @@ export default function GalacticShotsSection() {
   const [reelDataMap, setReelDataMap] = useState<Record<string, ReelData>>({})
   const [loading, setLoading] = useState(true)
   const [activeReel, setActiveReel] = useState<{ reel: ReelData; config: (typeof REEL_CONFIGS)[0] } | null>(null)
+  const [activeIdx, setActiveIdx] = useState(0)
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  // Track viewport size for 3D layout scaling
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Fetch real reel data from our secure server-side API route
   useEffect(() => {
@@ -370,10 +387,10 @@ export default function GalacticShotsSection() {
   return (
     <section
       id="galactic-shots"
-      className="py-24 px-gutter max-w-container-max mx-auto"
+      className="py-24 px-gutter max-w-container-max mx-auto overflow-hidden"
     >
       {/* Section header */}
-      <div className="text-center mb-16">
+      <div className="text-center mb-8">
         <h2 className="font-headline-lg text-headline-lg text-starlight-white mb-4">
           Galactic Shots
         </h2>
@@ -399,16 +416,107 @@ export default function GalacticShotsSection() {
         )}
       </div>
 
-      {/* 4-column reel grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {REEL_CONFIGS.map((config) => (
-          <ReelCard
-            key={config.shortcode}
-            config={config}
-            reelData={reelDataMap[config.shortcode]}
-            onPlay={() => handlePlay(config)}
-          />
-        ))}
+      {/* 3D cover flow slider container */}
+      <div
+        className="relative flex items-center justify-center w-full min-h-[500px] md:min-h-[540px] lg:min-h-[640px] py-10 overflow-hidden"
+        style={{ perspective: '1200px' }}
+      >
+        {REEL_CONFIGS.map((config, i) => {
+          const offset = i - activeIdx
+          let displayOffset = offset
+          if (displayOffset < -1) displayOffset += REEL_CONFIGS.length
+          if (displayOffset > 2) displayOffset -= REEL_CONFIGS.length
+
+          const isActive = displayOffset === 0
+          const isLeft = displayOffset === -1
+          const isRight = displayOffset === 1
+          const isHidden = !isActive && !isLeft && !isRight
+
+          let transformStyle = ''
+          let opacity = 0
+          let zIndex = 0
+
+          if (isActive) {
+            transformStyle = 'translateX(0) scale(1) rotateY(0deg)'
+            opacity = 1
+            zIndex = 10
+          } else if (isLeft) {
+            transformStyle = isDesktop
+              ? 'translateX(-105%) scale(0.85) rotateY(22deg)'
+              : 'translateX(-70%) scale(0.8) rotateY(20deg)'
+            opacity = 0.45
+            zIndex = 5
+          } else if (isRight) {
+            transformStyle = isDesktop
+              ? 'translateX(105%) scale(0.85) rotateY(-22deg)'
+              : 'translateX(70%) scale(0.8) rotateY(-20deg)'
+            opacity = 0.45
+            zIndex = 5
+          } else {
+            transformStyle = 'scale(0.6) rotateY(0deg)'
+            opacity = 0
+            zIndex = 0
+          }
+
+          return (
+            <div
+              key={config.shortcode}
+              className="absolute transition-all duration-700 ease-out origin-center w-[65vw] sm:w-[280px] lg:w-[320px]"
+              style={{
+                transform: transformStyle,
+                opacity: opacity,
+                zIndex: zIndex,
+                pointerEvents: isHidden ? 'none' : 'auto',
+                transformStyle: 'preserve-3d',
+              }}
+              onClick={() => {
+                if (isActive) {
+                  handlePlay(config)
+                } else {
+                  setActiveIdx(i)
+                }
+              }}
+            >
+              <ReelCard
+                config={config}
+                reelData={reelDataMap[config.shortcode]}
+                isActive={isActive}
+              />
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Navigation Controls */}
+      <div className="flex items-center justify-center gap-4 mt-8">
+        <button
+          onClick={() => setActiveIdx((prev) => (prev <= 0 ? REEL_CONFIGS.length - 1 : prev - 1))}
+          className="w-10 h-10 rounded-full border border-outline-variant/30 bg-deep-navy/30 hover:bg-deep-navy/60 hover:border-primary/50 text-starlight-white hover:text-primary flex items-center justify-center transition-all duration-300 cursor-pointer active:scale-95"
+          aria-label="Previous reel"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        
+        <div className="flex gap-1.5">
+          {REEL_CONFIGS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveIdx(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                activeIdx === i ? 'w-6 bg-primary' : 'w-1.5 bg-secondary-fixed-dim/20 hover:bg-secondary-fixed-dim/40'
+              }`}
+              aria-label={`Go to reel ${i + 1}`}
+            />
+          ))}
+        </div>
+
+        <button
+          onClick={() => setActiveIdx((prev) => (prev >= REEL_CONFIGS.length - 1 ? 0 : prev + 1))}
+          className="w-10 h-10 rounded-full border border-outline-variant/30 bg-deep-navy/30 hover:bg-deep-navy/60 hover:border-primary/50 text-starlight-white hover:text-primary flex items-center justify-center transition-all duration-300 cursor-pointer active:scale-95"
+          aria-label="Next reel"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
       {/* CTA */}
