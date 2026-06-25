@@ -57,7 +57,7 @@ const nextConfig = {
       // Short max-age + stale-while-revalidate: CDN edge serves stale
       // instantly (zero TTFB) while quietly refreshing in background.
       {
-        source: '/(.*)',
+        source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
         headers: [
           {
             key: 'Cache-Control',

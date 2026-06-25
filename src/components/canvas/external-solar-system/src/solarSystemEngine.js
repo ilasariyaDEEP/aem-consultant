@@ -88,11 +88,14 @@ export function initSolarSystem(container, onPlanetClick) {
 
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
+  let canvasRect = null;
 
   function updateMouseCoords(clientX, clientY) {
-    const rect = renderer.domElement.getBoundingClientRect();
-    mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    if (!canvasRect) {
+      canvasRect = renderer.domElement.getBoundingClientRect();
+    }
+    mouse.x = ((clientX - canvasRect.left) / canvasRect.width) * 2 - 1;
+    mouse.y = -((clientY - canvasRect.top) / canvasRect.height) * 2 + 1;
   }
 
   function onMouseMove(event) {
@@ -414,6 +417,7 @@ export function initSolarSystem(container, onPlanetClick) {
   animate();
 
   function onWindowResize() {
+    canvasRect = null;
     const width = container.clientWidth;
     const height = container.clientHeight;
     camera.aspect = width / height;
