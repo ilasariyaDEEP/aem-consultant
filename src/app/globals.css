@@ -11,7 +11,7 @@
   --color-void-black: #05070A;
   --color-deep-navy: #0B0D17;
   --color-starlight-white: #F9FAFB;
-  --color-cosmic-teal: #5B8B99;
+  --color-cosmic-teal: #82B2C0;
 
   /* ── Fluid Typography Scale (clamp: min @ 375px → max @ 1280px) ── */
   /* Formula: clamp(min, preferred-vw, max) scales linearly between breakpoints */
@@ -38,7 +38,7 @@ body {
   color: #cee7ee;
   overflow-x: hidden;
   cursor: none;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), sans-serif;
 }
 
 nav ul,

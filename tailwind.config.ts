@@ -15,7 +15,7 @@ const config: Config = {
         'starlight-white': '#F9FAFB',
         'nebula-purple': '#4C1D95',
         'deep-navy': '#0B0D17',
-        'cosmic-teal': '#5B8B99',
+        'cosmic-teal': '#82B2C0',
         // Material Design Surface Tokens
         surface: '#00161c',
         'surface-dim': '#00161c',
@@ -71,14 +71,14 @@ const config: Config = {
         'outline-variant': '#4a4452',
       },
       fontFamily: {
-        'display-lg': ['Sora', 'sans-serif'],
-        'display-lg-mobile': ['Sora', 'sans-serif'],
-        'headline-lg': ['Sora', 'sans-serif'],
-        'headline-md': ['Sora', 'sans-serif'],
-        'body-lg': ['Inter', 'sans-serif'],
-        'body-md': ['Inter', 'sans-serif'],
-        'label-caps': ['"JetBrains Mono"', 'monospace'],
-        'label-md': ['"JetBrains Mono"', 'monospace'],
+        'display-lg': ['var(--font-sora)', 'sans-serif'],
+        'display-lg-mobile': ['var(--font-sora)', 'sans-serif'],
+        'headline-lg': ['var(--font-sora)', 'sans-serif'],
+        'headline-md': ['var(--font-sora)', 'sans-serif'],
+        'body-lg': ['var(--font-inter)', 'sans-serif'],
+        'body-md': ['var(--font-inter)', 'sans-serif'],
+        'label-caps': ['var(--font-jetbrains-mono)', 'monospace'],
+        'label-md': ['var(--font-jetbrains-mono)', 'monospace'],
       },
       fontSize: {
         // Fluid typography — scales continuously from 375px → 1280px viewport

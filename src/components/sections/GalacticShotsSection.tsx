@@ -384,7 +384,7 @@ export default function GalacticShotsSection() {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:underline pointer-events-auto"
+            className="text-primary underline hover:text-primary-container transition-colors pointer-events-auto"
           >
             @galactic.shots
           </Link>
