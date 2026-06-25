@@ -53,18 +53,11 @@ const nextConfig = {
           },
         ],
       },
-      // ── HTML pages ───────────────────────────────────────────────────────
-      // Short max-age + stale-while-revalidate: CDN edge serves stale
-      // instantly (zero TTFB) while quietly refreshing in background.
+      // ── Global Security Headers ──────────────────────────────────────────
       {
-        source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
+        source: '/:path*',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=60, stale-while-revalidate=600',
-          },
-          { key: 'Vary', value: 'Accept-Encoding' },
-          // Strict security headers (bonus for Core Web Vitals)
+          // Strict security headers (bonus for Core Web Vitals and security compliance)
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },

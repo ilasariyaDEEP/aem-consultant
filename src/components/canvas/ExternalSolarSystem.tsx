@@ -27,6 +27,11 @@ export default function ExternalSolarSystem() {
 
   useEffect(() => {
     setMounted(true);
+
+    // Prevent Three.js initialization and active rendering loop on mobile viewports
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+
     if (!containerRef.current) return;
 
     // Initialize the Vanilla Three.js Solar System

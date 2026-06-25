@@ -87,6 +87,10 @@ export default function WebGLBackground(): null {
   const mouseRef = useRef<{ x: number; y: number }>({ x: -10000, y: -10000 })
 
   useEffect(() => {
+    // Prevent WebGL rendering loops on mobile viewports to optimize TBT and performance
+    const isMobile = window.innerWidth < 768
+    if (isMobile) return
+
     // Create and insert canvas into document
     const canvas = document.createElement('canvas')
     canvas.id = 'webgl-bg-canvas'
