@@ -15,7 +15,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: 'key-monastery',
-    src: '/images/celestial-2.jpg',
+    src: '/images/celestial-2.webp',
     alt: 'Milky Way behind tree near Key Monastery, Spiti',
     caption: 'Milky Way over Key Monastery',
     location: 'Key Monastery Outskirts, Spiti',

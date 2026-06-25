@@ -76,16 +76,6 @@ export default function Footer() {
                 Mumbai, India · IST (UTC +5:30)
               </div>
             </div>
-            
-            {/* Skill-badge tags */}
-            <div className="flex flex-wrap gap-2 pt-2">
-              <span className="px-3 py-1 bg-nebula-purple/10 border border-nebula-purple/30 text-primary rounded-lg font-label-md text-xs uppercase tracking-wider">
-                Select Collaborations
-              </span>
-              <span className="px-3 py-1 bg-white/5 border border-white/10 text-secondary-fixed-dim rounded-lg font-label-md text-xs">
-                Global Projects
-              </span>
-            </div>
           </div>
 
           {/* COLUMN 2 — Navigation (3rd on mobile, 2nd on desktop) */}

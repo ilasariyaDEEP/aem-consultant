@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
@@ -40,21 +41,12 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://www.deepilasariya.com/',
-    images: [
-      {
-        url: 'https://www.deepilasariya.com/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Deep Ilasariya | AEM Solutions Consultant Mumbai',
-      },
-    ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'Deep Ilasariya | AEM Solutions Consultant',
     description:
       'Adobe Certified AEM Expert. 3+ years delivering enterprise CMS operations for HDFC Bank, Tata AIA, Medtronic and more. Available for collaborations.',
-    images: ['https://www.deepilasariya.com/og-image.png'],
   },
   robots: {
     index: true,
@@ -186,6 +178,21 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body-md text-body-md bg-transparent text-on-background antialiased overflow-x-hidden" suppressHydrationWarning>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-YJVNTRBKG4"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-YJVNTRBKG4');
+          `}
+        </Script>
+
         {/* WebGL starfield background canvas | mounted once globally */}
         <WebGLBackground />
 

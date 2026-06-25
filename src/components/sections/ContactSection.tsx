@@ -96,16 +96,28 @@ export default function ContactSection() {
       setContactFormStatus('submitting')
 
       try {
-        const response = await fetch('/api/contact', {
+        const key = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || 'cf9aacbc-7afe-44b9-bb65-ca0c8d81fa28'
+        const response = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            access_key: key,
+            name: formData.name,
+            email: formData.email,
+            subject: `[Portfolio Signal] ${formData.subject} ${formData.highPriority ? '🚨' : ''}`,
+            message: formData.message,
+            from_name: `${formData.name} (Via Portfolio)`,
+            replyto: formData.email,
+          }),
         })
 
-        if (!response.ok) {
-          throw new Error('API submission failed')
+        const data = await response.json()
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || 'Web3Forms API call failed')
         }
 
         setContactFormStatus('success')
